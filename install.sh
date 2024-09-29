@@ -120,7 +120,7 @@ setup_shopify_configs() {
     if [ -n "$SPIN" ]; then
         if [ ! -d "$DOTFILES_DIR/shopify-dotfiles" ]; then
             echo "Adding Shopify configurations..."
-            git subtree add --prefix=shopify-dotfiles git@github.com:Shopify/dotfiles.git zakwarsame --squash
+            git subtree add --prefix=shopify-dotfiles git@github.com:Shopify/dotfiles.git zakwarsame_ --squash
         fi
 
         # Run Shopify-specific install script if it exists
