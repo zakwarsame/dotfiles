@@ -2,163 +2,175 @@
 
 # Detect OS
 detect_os() {
-    if [[ "$OSTYPE" == "linux-gnu"* ]]; then
-        echo "linux"
-    elif [[ "$OSTYPE" == "darwin"* ]]; then
-        echo "macos"
-    else
-        echo "unknown"
-    fi
+    case "$OSTYPE" in
+        linux*) OS="linux" ;;
+        darwin*) OS="macos" ;;
+        *) OS="unknown" ;;
+    esac
+    echo "Detected OS: $OS"
 }
 
-# Detect OS
-$OS=$(detect_os)
-
-echo "OS: $OS"
-
-# Install the antidote plugin/theme manager if it's not already installed.
-if [[ ! -d $HOME/antidote ]]; then
-	echo -e "Antidote not found, installing..."
-	cd $HOME
-  git clone --depth=1 https://github.com/mattmc3/antidote.git ${ZDOTDIR:-~}/.antidote
-	cd -
-fi
+detect_os
 
 DOTFILES_DIR="$HOME/dotfiles"
 CONFIG_DIR="$HOME/.config"
 BACKUP_DIR="$HOME/.config_backup_$(date +%Y%m%d_%H%M%S)"
 
+# antidote
+install_antidote() {
+    local antidote_dir="${ZDOTDIR:-$HOME}/.antidote"
+    if [[ ! -d "$antidote_dir" ]]; then
+        echo "Installing Antidote..."
+        git clone --depth=1 https://github.com/mattmc3/antidote.git "$antidote_dir"
+    fi
+}
 
+# GNU stow
 install_stow() {
-    if ! command -v stow &> /dev/null; then
-        echo "Stow not found. Installing..."
-        if [ "$OS" == "linux" ]; then
+    if ! command -v stow &>/dev/null; then
+        echo "Installing GNU Stow..."
+        if [[ "$OS" == "linux" ]]; then
             sudo apt-get update && sudo apt-get install -y stow
-        elif [ "$OS" == "macos" ]; then
+        elif [[ "$OS" == "macos" ]]; then
             brew install stow
         else
-            echo "Unable to install stow. Please install it manually."
+            echo "Unsupported OS for automatic Stow installation."
             exit 1
         fi
     fi
 }
 
 backup_config() {
-    if [ -e "$1" ]; then
+    local target="$1"
+    if [ -e "$target" ]; then
         mkdir -p "$BACKUP_DIR"
-        mv "$1" "$BACKUP_DIR/"
-        echo "Backed up $1 to $BACKUP_DIR/"
+        mv "$target" "$BACKUP_DIR/"
+        echo "Backed up $target to $BACKUP_DIR/"
     fi
 }
 
+# Stow configurations with OS-specific handling
 stow_config() {
     local target="$1"
     local package="$2"
-    local stow_dir="$3"
 
-    if [ -e "$target/.zshrc" ]; then
-        backup_config "$target/.zshrc"
-    fi
-    if [ -e "$target/headers.txt" ]; then
-        backup_config "$target/headers.txt"
-    fi
-
+    case "$package" in
+        espanso)
+            if [[ "$OS" == "linux" ]]; then
+                target="$HOME/.config"
+            elif [[ "$OS" == "macos" ]]; then
+                target="$HOME/Library/Application Support"
+            else
+                echo "Unsupported OS for Espanso configuration."
+                return
+            fi
+            ;;
+        *)
+            target="$1"
+            ;;
+    esac
 
     mkdir -p "$target"
-    # stow --verbose --target="$target" --dir="$stow_dir" "$package"
-    stow --target="$target" --dir="$stow_dir" "$package"
+    stow --dir="$DOTFILES_DIR" --target="$target" "$package"
     echo "Stowed $package to $target"
 }
 
-# Backup and stow common configs
 setup_common_configs() {
-    local config_packages=("nvim" "wezterm" "kitty" "espanso" "aerospace")
+    local config_packages=("nvim" "wezterm" "kitty" "aerospace" "espanso")
+    local home_packages=("git" "zsh")
 
     for package in "${config_packages[@]}"; do
         backup_config "$CONFIG_DIR/$package"
-        stow_config "$HOME" "$package" "$DOTFILES_DIR"
+        # For config packages, stow to $HOME instead of $CONFIG_DIR
+        stow_config "$HOME" "$package"
     done
 
-    # Handle configs that go directly in the home directory
-    local home_packages=("git" "zsh")
     for package in "${home_packages[@]}"; do
-        stow_config "$HOME" "$package" "$DOTFILES_DIR"
+        backup_config "$HOME/.$package"
+        stow_config "$HOME" "$package"
     done
 
-    # Delete antidote.zsh_plugins.zsh to ensure a new one is created (fixes path bug for linux vs mac)
+    # Remove existing Antidote plugin - caused bugs b4
     local antidote_plugins_file="$HOME/.zsh/antidote.zsh_plugins.zsh"
     if [ -f "$antidote_plugins_file" ]; then
-        echo "Removing existing antidote.zsh_plugins.zsh file..."
+        echo "Removing existing Antidote plugins file..."
         rm "$antidote_plugins_file"
     fi
 }
 
+# Linux-specific
 setup_linux_configs() {
     echo "Configuring Linux-specific settings..."
 
     # Keyd configuration
-    backup_config "/etc/keyd/default.conf"
     if [ -d "/etc/keyd" ]; then
-        sudo stow -t /etc/keyd keyd
+        backup_config "/etc/keyd/default.conf"
+        sudo stow --target=/etc/keyd --dir="$DOTFILES_DIR" keyd
     else
         echo "Keyd directory not found. Skipping keyd configuration."
     fi
-
-    # Espanso for Linux
-    local espanso_dir="$HOME/.config"
-    backup_config "$espanso_dir/espanso"
-    stow_config "$espanso_dir" "espanso" "$DOTFILES_DIR"
 }
 
+# Configure macOS-specific settings
 setup_macos_configs() {
     echo "Configuring macOS-specific settings..."
+}
 
-    # Espanso for macOS
-    local espanso_dir="$HOME/Library/Application Support"
-    backup_config "$espanso_dir/espanso"
-    stow_config "$espanso_dir" "espanso" "$DOTFILES_DIR"
+setup_shopify_configs() {
+    if [ -n "$SPIN" ]; then
+        if [ ! -d "$DOTFILES_DIR/shopify-dotfiles" ]; then
+            echo "Adding Shopify configurations..."
+            git subtree add --prefix=shopify-dotfiles git@github.com:Shopify/dotfiles.git zakwarsame --squash
+        fi
+
+        # Run Shopify-specific install script if it exists
+        if [ -f "$DOTFILES_DIR/shopify-dotfiles/install.sh" ]; then
+            source "$DOTFILES_DIR/shopify-dotfiles/install.sh"
+        fi
+
+        # Link Neovim configuration
+        ln -sf "$DOTFILES_DIR/shopify-dotfiles/shopify_config.lua" "$HOME/.config/nvim/lua/custom/shopify_config.lua"
+
+        setup_shopify_espanso
+    fi
+}
+
+setup_shopify_espanso() {
+    echo "Setting up Shopify Espanso configurations..."
+
+    if [[ "$OS" == "linux" ]]; then
+        espanso_dir="$HOME/.config/espanso/match"
+    elif [[ "$OS" == "macos" ]]; then
+        espanso_dir="$HOME/Library/Application Support/espanso/match"
+    else
+        echo "Unsupported OS for Shopify Espanso configuration."
+        return
+    fi
+
+    mkdir -p "$espanso_dir"
+    cp "$DOTFILES_DIR/shopify-dotfiles/match/shopify.yml" "$espanso_dir/"
+    echo "Shopify Espanso configurations updated."
 }
 
 main() {
-    OS=$(detect_os)
+    install_antidote
     install_stow
 
-    mkdir -p "$CONFIG_DIR"
     cd "$DOTFILES_DIR" || exit
 
     setup_common_configs
 
-    case $OS in
-        linux)
-            setup_linux_configs
-            ;;
-        macos)
-            setup_macos_configs
-            ;;
-        *)
-            echo "Unknown OS. Skipping OS-specific configurations."
-            ;;
-    esac
+    if [[ "$OS" == "linux" ]]; then
+        setup_linux_configs
+    elif [[ "$OS" == "macos" ]]; then
+        setup_macos_configs
+    else
+        echo "Unsupported OS for OS-specific configurations."
+    fi
+
+    setup_shopify_configs
 
     echo "Dotfiles installation complete!"
 }
 
 main
-
-# shopify stuff
-if [ -n "$SPIN" ]; then
-  # Include shopify-dotfiles subtree
-  if [ ! -d "$DOTFILES_DIR/shopify-dotfiles" ]; then
-    echo "Adding Shopify configurations..."
-    git subtree add --prefix=shopify-dotfiles git@github.com:Shopify/dotfiles.git zakwarsame --squash
-  fi
-
-  # Run Shopify-specific install scripts if they exist
-  if [ -f "$DOTFILES_DIR/shopify-dotfiles/install.sh" ]; then
-    source "$DOTFILES_DIR/shopify-dotfiles/install.sh"
-  fi
-  
-  # link lua file
-    ln -sf "$HOME/shopify-dotfiles/shopify_config.lua" "$HOME/.config/nvim/lua/custom/shopify_config.lua"
-
-fi

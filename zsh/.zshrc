@@ -56,3 +56,8 @@ esac
 if [ -n "$SPIN" ] && [ -d "$DF_HOME/shopify-dotfiles" ]; then
   source "$DF_HOME/shopify-dotfiles/shopify.zsh"
 fi
+
+function su() {
+    local service=${1%%:*}
+    spin up $1 --wait -n $2 -c $service.branch=${3:-main}
+}
