@@ -1,0 +1,157 @@
+[include]
+	# Include user-specific info like git credentials.
+	path = ~/.gitconfig.local
+
+[includeIf "env:MYOS=macos"]
+    path = ~/.gitconfig-macos
+
+[includeIf "env:MYOS=linux"]
+    path = ~/.gitconfig-linux
+
+[alias]
+    a = add
+    # Amend the currently staged files to the latest commit
+    amend = commit --amend --verbose --reuse-message=HEAD
+    ap = add -p
+    # list branches sorted by last modified
+    b = "!git for-each-ref --sort='-authordate' --format='%(authordate)%09%(objectname:short)%09%(refname)' refs/heads | sed -e 's-refs/heads/--'"
+    bd = branch -d
+    c = commit --verbose
+    ca = commit -a --verbose
+    co = checkout
+    cob = checkout -b
+    cm = commit -m
+    cam = commit -a -m
+    # Append any staged files onto the most recent commit.
+    commend = commit --amend --no-edit
+
+    mom = merge origin main
+    fo = fetch origin
+    r = rebase
+
+    d = diff
+    ds = diff --stat
+    dc = diff --cached
+
+    # Forcepush, but fail if the remote has been updated since you last pulled.
+    # Prevents clobbering other people's commits on the same branch unless you really, really want to.
+    forcepush = push --force-with-lease
+
+    s = status -s
+
+    # list aliases
+    la = "!git config -l | grep alias | cut -c 7-"
+
+    # Show the most recent commit, including files changed
+    lastlog = log -1 HEAD --stat
+
+    # Custom log formats
+    ll = !git --no-pager log --graph --all --decorate --pretty=format:'%C(auto)%h%d  %ad %C(red bold)(%ar%C(red bold))%Creset  %Creset%C(magenta)%an %Creset<%ae>  %C(white bold)%<(80,trunc)%s' --date=iso
+    l = !git --no-pager log -n 40 --graph --pretty=format:'%Cred%h%Creset -%C(auto)%d%Creset %s %Cgreen(%cr) %C(blue bold)<%an>%Creset'
+    pullup = !git pull --rebase origin main && $SHELL -i -c 'dev up'
+
+	# Show verbose output about tags, branches or remotes
+	tags = tag -l
+	branches = branch -av
+	remotes = remote -v
+
+	# Remove branches that have already been merged with master
+	# a.k.a. ‘delete merged’
+	dm = "!git branch --merged | grep -v '\\*' | xargs -n 1 git branch -d"
+
+	# git blame that ignores whitespace, detects moved or copied lines, and shows the original commit
+	bl = blame -w -C -C -C
+[init]
+	defaultBranch = main
+
+[rerere]
+	# https://git-scm.com/docs/git-rerere
+	# Reuse Recorded Resolution
+	# If you have a merge conflict, this setting will record how that conflict was resolved. If you would then need to
+	# resolve that same conflict in a future rebase, this setting will reuse your previously recorded conflict resolution.
+	enabled = true
+	autoupdate = true
+[mergetool]
+	keepBackup = false
+[filter "lfs"]
+	process = git-lfs filter-process
+	required = true
+	clean = git-lfs clean -- %f
+	smudge = git-lfs smudge -- %f
+[core]
+	editor = code -w
+[pull]
+	rebase = true
+
+	# Prevent automatic creation of merge commits if the pull can't fast forward.
+	# If a pull fails because of this, you can retry it with `git pull --rebase` to rebase onto the new commits.
+	# Shopify prefers to rebase, so this will require you to decide if a rebase is necessary.
+	ff = only
+
+[commit]
+ 	gpgsign = true
+
+[core]
+	# http://adaptivepatchwork.com/2012/03/01/mind-the-end-of-your-line/
+	eol = native
+	autocrlf = input
+	safecrlf = true
+	ignorecase = false
+	excludesfile = ~/.gitignore_global
+
+	# Make `git rebase` safer on OS X
+	# More info: <http://www.git-tower.com/blog/make-git-rebase-safe-on-osx/>
+	trustctime = false
+
+	# Prevent showing files whose names contain non-ASCII symbols as unversioned.
+	# http://michael-kuehnel.de/git/2014/11/21/git-mac-osx-and-german-umlaute.html
+	precomposeunicode = false
+
+[apply]
+
+	# Detect whitespace errors when applying a patch
+	whitespace = fix
+
+[color "branch"]
+
+	current = yellow reverse
+	local = yellow
+	remote = green
+
+[color "diff"]
+
+	meta = yellow bold
+	frag = magenta bold # line info
+	old = red # deletions
+	new = green # additions
+
+[color "status"]
+
+	added = yellow
+	changed = green
+	untracked = cyan
+
+[diff]
+
+	# Detect copies as well as renames
+	renames = copies
+	algorithm = patience
+
+[help]
+
+	# Automatically correct and execute mistyped commands. Keep this off unless you enjoy pain.
+	autocorrect = 0
+
+[pull]
+	# Prevent automatic creation of merge commits if the pull can't fast forward.
+	# If a pull fails because of this, you can retry it with `git pull --rebase` to rebase onto the new commits.
+	# Shopify prefers to rebase, so this will require you to decide if a rebase is necessary.
+	ff = only
+
+[rerere]
+	# https://git-scm.com/docs/git-rerere
+	# Reuse Recorded Resolution
+	# If you have a merge conflict, this setting will record how that conflict was resolved. If you would then need to
+	# resolve that same conflict in a future rebase, this setting will reuse your previously recorded conflict resolution.
+	enabled = true
+	autoupdate = true

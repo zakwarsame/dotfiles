@@ -1,0 +1,24 @@
+matches:
+  # Smiling face
+  - trigger: ";smile"
+    replace: "😊"
+
+  # Thumbs up
+  - trigger: ";thumbsup"
+    replace: "👍"
+
+  # Heart
+  - trigger: ";heart"
+    replace: "❤️"
+
+  # Clapping hands
+  - trigger: ";clap"
+    replace: "👏"
+
+  # Party popper
+  - trigger: ";party"
+    replace: "🎉"
+
+  # praise
+  - trigger: ";praise"
+    replace: ":praise:"

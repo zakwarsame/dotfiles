@@ -1,0 +1,36 @@
+matches:
+  - trigger: ";jsrandom"
+    label: "JavaScript - Random number between min and max"
+    replace: "const random = (min, max) => Math.floor(Math.random() * (max - min)) + min;"
+
+  - trigger: ";jsrange"
+    label: "JavaScript - Array of numbers between min and max"
+    replace: |-
+      const range = (start, end, step = 1) => {
+        let output = [];
+        if (typeof end === 'undefined') {
+          end = start;
+          start = 0;
+        }
+        for (let i = start; i < end; i += step) {
+          output.push(i);
+        }
+        return output;
+      };
+
+  - trigger: ";jsdebounce"
+    label: "JavaScript - Debounce function"
+    replace: |-
+      const debounce = (callback, wait) => {
+        let timeoutId = null;
+        return (...args) => {
+          window.clearTimeout(timeoutId);
+          timeoutId = window.setTimeout(() => {
+            callback.apply(null, args);
+          }, wait);
+        };
+      }
+
+  - trigger: "clg"
+    label: "JavaScript - console.log"
+    replace: "console.log($|$);"

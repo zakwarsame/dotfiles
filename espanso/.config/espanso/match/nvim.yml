@@ -1,0 +1,24 @@
+matches:
+  - trigger: ";theme"
+    label: "Telescope- color scheme"
+    replace: |-
+      Telescope colorscheme
+    force_clipboard: true
+
+  - trigger: ";rc"
+    label: "neovim- vim rc"
+    replace: |-
+      e $MYVIMRC
+    force_clipboard: true
+
+  - trigger: ";run"
+    label: "neovim- souce % (reload file)"
+    replace: |-
+      source %
+    force_clipboard: true
+
+  - trigger: ";bd"
+    label: "neovim - close all buffers except focused"
+    replace: |-
+      %bd|e#|bd#
+    force_clipboard: true

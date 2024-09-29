@@ -1,0 +1,97 @@
+# espanso match file
+
+# For a complete introduction, visit the official docs at: https://espanso.org/docs/
+
+# You can use this file to define the base matches (aka snippets)
+# that will be available in every application when using espanso.
+
+# Matches are substitution rules: when you type the "trigger" string
+# it gets replaced by the "replace" string.
+matches:
+  # Simple text replacement
+  - trigger: ";espanso"
+    replace: "Hi there!"
+
+  - trigger: ";now"
+    replace: "It's {{mytime}}"
+    vars:
+      - name: shellcmd
+        type: shell
+        params:
+          cmd: echo "%H:%M"
+      - name: mytime
+        type: date
+        params:
+          format: "{{shellcmd}}"
+
+  - trigger: ";rocket"
+    replace: "{{output}}"
+    vars:
+      - name: output
+        type: shell
+        params:
+          cmd: |
+            urls=("https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExM2g4YXBxYnVwOWcxa2FpNjkyM3BsMjhwNWhoMmRmOGZiZGZ4aTc2ayZlcD12MV9naWZzX3NlYXJjaCZjdD1n/5XCWLH6ovlsiISpU2U/giphy.gif"
+                  "https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExM2g4YXBxYnVwOWcxa2FpNjkyM3BsMjhwNWhoMmRmOGZiZGZ4aTc2ayZlcD12MV9naWZzX3NlYXJjaCZjdD1n/TRFcNpyLTdo2kUmkwm/giphy.gif"
+                  "https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExZTJjOTQ1cnR5dTYyMmh3bmdvcmVrcWhwbG14bmV3ZXhjcjFwZ203ZiZlcD12MV9naWZzX3NlYXJjaCZjdD1n/tXLpxypfSXvUc/giphy.gif"
+                  "https://media.giphy.com/media/5xaOcLGm3mKRQuDYCgU/giphy.gif?cid=790b7611ii8q1pviihwjzysbjsljxeh2j55crend1x1ehrgf&ep=v1_gifs_search&rid=giphy.gif&ct=g"
+                  "https://media.giphy.com/media/QOv1pYQfjVnMxS8Ti0/giphy.gif?cid=ecf05e47i6ixggc3s1h9eeph7oixdxhiiphmpr19qbbtvcnn&ep=v1_gifs_search&rid=giphy.gif&ct=g"); index=$((1 + RANDOM % ${#urls[@]})); echo "<img src=\"${urls[$index]}\" alt=\"rockets\" width=\"300px\" />"
+    force_clipboard: true
+
+  # NOTE: espanso uses YAML to define matches, so pay attention to the indentation!
+
+  # But matches can also be dynamic:
+
+  # Print the current date
+  - trigger: ";date"
+    replace: "{{mydate}}"
+    vars:
+      - name: mydate
+        type: date
+        params:
+          format: "%m/%d/%Y"
+
+  - trigger: "url"
+    replace: "URL"
+
+  - replace: "\U0001F41B"
+    trigger: ":bug:"
+  # And much more! For more information, visit the docs: https://espanso.org/docs/
+
+  # smileys
+  - trigger: ;wut
+    label: "Smileys - ultraflip - flip - emoticons"
+    form: "[[smileys]]"
+    form_fields:
+      smileys:
+        type: list
+        values:
+          - '¯\\_(ツ)_/¯'
+          - "(╯°□°）╯︵ ┻━┻"
+          - "( ͡ಠ ʖ̯ ͡ಠ)"
+          - "☉ ‿ ⚆"
+          - "ʕ•ᴥ•ʔ"
+          - "⋆｡˚ ☁︎ ˚｡⋆｡˚☽˚｡⋆"
+          - "(¬‿¬)"
+          - "(づᵔ◡ᵔ)づ"
+          - "|ᵔ‿ᵔ|"
+          - "⤜(*﹏*)⤏"
+          - "ツ"
+          - " ┻━┻ ︵╰(°□°)╯︵ ┻━┻"
+          - "(╥﹏╥)"
+          - "ಠ_ಠ"
+          - "(ง •̀_•́)ง"
+          - "(>_<)"
+          - "ヽ(•‿•)ノ"
+
+  - trigger: ";weather"
+    replace: "{{output}}"
+    vars:
+      - name: output
+        type: shell
+        params:
+          cmd: "/usr/bin/curl -s 'wttr.in/?format=%C+%t+%w'"
+
+  - trigger: ";open"
+    label: "open ai server"
+    replace: "dev cd openai-proxy && dev s"

@@ -1,0 +1,18 @@
+matches:
+  - trigger: ";cc"
+    label: "cargo check"
+    replace: |-
+      cargo check
+    force_clipboard: true
+
+  - trigger: ";cb"
+    label: "cargo build"
+    replace: |-
+      cargo build
+    force_clipboard: true
+
+  - trigger: ";cr"
+    label: "cargo run"
+    replace: |-
+      cargo run
+    force_clipboard: true
