@@ -1,17 +1,17 @@
 # dotfiles
 
-my current dotfiles setup. so much bs and iterations going on here. it's like a cozy digital home, you know?
+my current dotfiles setup. so much bs and iterations going on here and i'm too lazy to clean it up.
 
 ## structure
 
 - `git/`: all my git-related stuff
-- `nvim/`: neovim config (because vim is life)
+- `nvim/`: neovim config
 - `wezterm/`: terminal emulator config
 - `zsh/`: zsh shell goodies
 - `kitty/`: kitty terminal config (barely used anymore)
 - `espanso/`: text expansion magic
 - `aerospace/`: window management for macos
-- `linux/`: linux-specific configs (like keyd)
+- `zellij/` for multiplexing (also barely use anymore because of wezterm)
 
 ```
 dotfiles/
@@ -55,7 +55,6 @@ dotfiles/
 
 1. clone this repo to your home directory
 2. run the `install.sh` script
-3. sit back and watch the magic happen
 
 the install script will:
 
@@ -73,5 +72,3 @@ the install script will:
 
 - macos: configures things like keyboard repeat rate and finder settings
 - linux: sets up keyd for advanced keyboard remapping
-
-lfg 🚀
