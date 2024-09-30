@@ -2,7 +2,9 @@ DOTFILES_DIRECTORY_NAME="dotfiles"
 DF_ZSH=~/$DOTFILES_DIRECTORY_NAME/zsh
 
 # pokemon colorscripts
-pokemon-colorscripts --no-title -s -r
+if [ -e /usr/local/bin/pokemon-colorscripts/usr/bin/pokemon-colorscripts ]; then
+  pokemon-colorscripts --no-title -s -r
+fi
 
 # enable if not using kitty
 # (cat ~/.cache/wal/sequences &)
@@ -30,8 +32,6 @@ alias gcf='git commit --fixup "$(git log --oneline | fzf --no-sort | awk "{print
 
 alias refresh='dev reup && dev restart'
 
-
-eval "$(zoxide init zsh)"
 
 # Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
 # Initialization code that may require console input (password prompts, [y/n]

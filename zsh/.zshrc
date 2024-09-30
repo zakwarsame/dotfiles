@@ -10,7 +10,9 @@ autoload -U colors
 colors
 
 # Set up custom environment variables
-source $DF_ZSH/environment.zsh
+if [ -e $DF_ZSH/environment.zsh ]; then
+  source $DF_ZSH/environment.zsh
+fi
 
 # set up custom env secrets
 source $DF_ZSH/environment.secrets.zsh
