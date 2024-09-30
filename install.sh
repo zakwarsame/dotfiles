@@ -1,20 +1,14 @@
 #!/bin/bash
 
-# Detect OS
-detect_os() {
-    case "$OSTYPE" in
-        linux*) OS="linux" ;;
-        darwin*) OS="macos" ;;
-        *) OS="unknown" ;;
-    esac
-    echo "Detected OS: $OS"
-}
-
-detect_os
+case "$OSTYPE" in
+    linux*) OS="linux" ;;
+    darwin*) OS="macos" ;;
+    *) OS="unknown" ;;
+esac
+echo "Detected OS: $OS"
 
 DOTFILES_DIR="$HOME/dotfiles"
-CONFIG_DIR="$HOME/.config"
-BACKUP_DIR="$HOME/.config_backup_$(date +%Y%m%d_%H%M%S)"
+BACKUP_DIR="$HOME/config_backup_$(date +%Y%m%d_%H%M%S)"
 
 # antidote
 install_antidote() {
@@ -25,7 +19,7 @@ install_antidote() {
     fi
 }
 
-# GNU stow
+# stow
 install_stow() {
     if ! command -v stow &>/dev/null; then
         echo "Installing GNU Stow..."
@@ -40,78 +34,90 @@ install_stow() {
     fi
 }
 
-backup_config() {
-    local target="$1"
-    if [ -e "$target" ]; then
-        mkdir -p "$BACKUP_DIR"
-        mv "$target" "$BACKUP_DIR/"
-        echo "Backed up $target to $BACKUP_DIR/"
-    fi
+backup_configs() {
+    echo "Backing up existing configurations to $BACKUP_DIR..."
+    mkdir -p "$BACKUP_DIR"
+
+    # backup entire dotfiles from $HOME
+    cp -a "$DOTFILES_DIR" "$BACKUP_DIR/"
 }
 
-# Stow configurations with OS-specific handling
-stow_config() {
-    local target="$1"
-    local package="$2"
+remove_configs() {
+    echo "Removing existing configurations..."
 
-    case "$package" in
-        espanso)
-            if [[ "$OS" == "linux" ]]; then
-                target="$HOME/.config"
-            elif [[ "$OS" == "macos" ]]; then
-                target="$HOME/Library/Application Support"
-            else
-                echo "Unsupported OS for Espanso configuration."
-                return
-            fi
-            ;;
-        *)
-            target="$1"
-            ;;
-    esac
+    local config_packages=("nvim" "wezterm" "kitty" "aerospace" "espanso")
+    for package in "${config_packages[@]}"; do
+        case "$package" in
+            espanso)
+                if [[ "$OS" == "linux" ]]; then
+                    rm -rf "$HOME/.config/espanso"
+                elif [[ "$OS" == "macos" ]]; then
+                    rm -rf "$HOME/Library/Application Support/espanso"
+                fi
+                ;;
+            *)
+                rm -rf "$HOME/.config/$package"
+                ;;
+        esac
+    done
 
-    mkdir -p "$target"
-    stow --dir="$DOTFILES_DIR" --target="$target" "$package"
-    echo "Stowed $package to $target"
+    local home_packages=("git" "zsh")
+    for package in "${home_packages[@]}"; do
+        rm -rf "$HOME/.$package"
+    done
+
+    # remove individual files
+    rm -f "$HOME/.gitconfig" "$HOME/.gitignore_global"
+    rm -f "$HOME/.zshrc" "$HOME/.p10k.zsh" "$HOME/.zshenv"
+    # remove Antidote plugins file
+    rm -f "$HOME/.zsh/antidote.zsh_plugins.zsh"
 }
 
-setup_common_configs() {
+stow_configs() {
+    echo "Stowing configurations..."
     local config_packages=("nvim" "wezterm" "kitty" "aerospace" "espanso")
     local home_packages=("git" "zsh")
 
     for package in "${config_packages[@]}"; do
-        backup_config "$CONFIG_DIR/$package"
-        # For config packages, stow to $HOME instead of $CONFIG_DIR
-        stow_config "$HOME" "$package"
+        case "$package" in
+            espanso)
+                if [[ "$OS" == "linux" ]]; then
+                    target="$HOME"
+                elif [[ "$OS" == "macos" ]]; then
+                    target="$HOME/Library/Application Support"
+                else
+                    echo "Unsupported OS for Espanso configuration."
+                    continue
+                fi
+                ;;
+            *)
+                target="$HOME"
+                ;;
+        esac
+        stow --dir="$DOTFILES_DIR" --target="$target" --restow "$package"
+        echo "Stowed $package to $target"
     done
 
     for package in "${home_packages[@]}"; do
-        backup_config "$HOME/.$package"
-        stow_config "$HOME" "$package"
+        stow --dir="$DOTFILES_DIR" --target="$HOME" --restow "$package"
+        echo "Stowed $package to $HOME"
     done
-
-    # Remove existing Antidote plugin - caused bugs b4
-    local antidote_plugins_file="$HOME/.zsh/antidote.zsh_plugins.zsh"
-    if [ -f "$antidote_plugins_file" ]; then
-        echo "Removing existing Antidote plugins file..."
-        rm "$antidote_plugins_file"
-    fi
 }
 
-# Linux-specific
 setup_linux_configs() {
     echo "Configuring Linux-specific settings..."
 
-    # Keyd configuration
+    # keyd configuration
     if [ -d "/etc/keyd" ]; then
-        backup_config "/etc/keyd/default.conf"
-        sudo stow --target=/etc/keyd --dir="$DOTFILES_DIR" keyd
+        sudo cp -a "/etc/keyd" "$BACKUP_DIR/"
+        sudo rm -rf "/etc/keyd"
+        sudo stow --dir="$DOTFILES_DIR" --target="/etc/keyd" --restow keyd
+        echo "Stowed keyd configuration to /etc/keyd"
     else
         echo "Keyd directory not found. Skipping keyd configuration."
     fi
 }
 
-# Configure macOS-specific settings
 setup_macos_configs() {
     echo "Configuring macOS-specific settings..."
 }
@@ -123,12 +129,11 @@ setup_shopify_configs() {
             git subtree add --prefix=shopify-dotfiles git@github.com:Shopify/dotfiles.git zakwarsame_ --squash
         fi
 
-        # Run Shopify-specific install script if it exists
         if [ -f "$DOTFILES_DIR/shopify-dotfiles/install.sh" ]; then
             source "$DOTFILES_DIR/shopify-dotfiles/install.sh"
         fi
 
-        # Link Neovim configuration
+        # link neovim configuration
         ln -sf "$DOTFILES_DIR/shopify-dotfiles/shopify_config.lua" "$HOME/.config/nvim/lua/custom/shopify_config.lua"
 
         setup_shopify_espanso
@@ -158,7 +163,9 @@ main() {
 
     cd "$DOTFILES_DIR" || exit
 
-    setup_common_configs
+    backup_configs
+    remove_configs
+    stow_configs
 
     if [[ "$OS" == "linux" ]]; then
         setup_linux_configs
