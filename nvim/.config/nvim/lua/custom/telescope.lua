@@ -18,6 +18,11 @@ require('telescope').setup {
       -- `hidden = true` will still show the inside of `.git/` as it's not `.gitignore`d.
       find_command = { 'rg', '--files', '--hidden', '--glob', '!**/.git/*' },
     },
+    git_branches = {
+      mappings = {
+        i = { ['<cr>'] = actions.git_switch_branch },
+      },
+    },
   },
   extensions = {
     ['ui-select'] = {
@@ -63,7 +68,8 @@ require('telescope').setup {
 -- Enable Telescope extensions if they are installed
 pcall(require('telescope').load_extension, 'fzf')
 pcall(require('telescope').load_extension, 'ui-select')
-pcall(require('telescope').load_extension 'live_grep_args')
+pcall(require('telescope').load_extension, 'live_grep_args')
+pcall(require('telescope').load_extension, 'git_worktree')
 
 local live_grep_args_shortcuts = require 'telescope-live-grep-args.shortcuts'
 -- See `:help telescope.builtin`
@@ -85,6 +91,17 @@ vim.keymap.set('n', '<leader>s.', builtin.oldfiles, { desc = '[S]earch Recent Fi
 vim.keymap.set('n', '<leader><leader>', builtin.buffers, { desc = '[ ] Find existing buffers' })
 vim.keymap.set('n', '<leader>sg', ":lua require('telescope').extensions.live_grep_args.live_grep_args()<CR>", { desc = '[F]ind [G]rep Args' })
 vim.keymap.set('n', '<leader>sc', live_grep_args_shortcuts.grep_word_under_cursor, { desc = '[G]rep [C]urrent Word' })
+
+-- git pickers
+vim.keymap.set('n', '<leader>gs', builtin.git_status, { desc = '[G]it [S]tatus' })
+vim.keymap.set('n', '<leader>gb', function()
+  builtin.git_branches { show_remote_tracking_branches = false }
+end, { desc = '[G]it [B]ranches (Local)' })
+vim.keymap.set('n', '<leader>gc', builtin.git_commits, { desc = '[G]it [C]ommits' })
+
+-- git worktrees
+-- vim.keymap.set('n', '<leader>gw', require('telescope').extensions.git_worktree.git_worktree, { desc = '[G]it [W]orktrees' })
+-- vim.keymap.set('n', '<leader>gW', require('telescope').extensions.git_worktree.create_git_worktree, { desc = '[G]it Create [W]orktree' })
 
 -- Slightly advanced example of overriding default behavior and theme
 vim.keymap.set('n', '<leader>/', function()

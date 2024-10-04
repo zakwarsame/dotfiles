@@ -1,4 +1,4 @@
-local openai = require("avante.providers.openai")
+local openai = require 'avante.providers.openai'
 
 require('avante').setup {
   mappings = {
@@ -10,20 +10,28 @@ require('avante').setup {
       hint = '<leader>;h',
     },
     submit = {
-      -- insert = '<C-c>',
-      -- use ctrl + enter to submit
       insert = '<C-CR>',
     },
+
+    suggestion = {
+      accept = '<C-y>',
+      next = '<C-n>',
+      prev = '<C-p>',
+    },
+  },
+  behaviour = {
+    auto_suggestions = true,
   },
   hints = {
     enabled = false,
   },
-  provider = 'my_proxy', -- Name of your custom provider
+  provider = 'local_proxy',
+  auto_suggestions_provider = 'local_proxy',
   vendors = {
-    ['my_proxy'] = {
-      endpoint = 'http://127.0.0.1:8787/v3/v1/', -- Full endpoint URL
+    ['local_proxy'] = {
+      endpoint = 'http://127.0.0.1:8787/v3/v1/',
       model = 'anthropic:claude-3-5-sonnet',
-      api_key_name = 'ANTHROPIC_API_KEY', -- Env variable with your API key
+      api_key_name = 'ANTHROPIC_API_KEY',
       parse_curl_args = openai.parse_curl_args,
       parse_response_data = openai.parse_response,
     },

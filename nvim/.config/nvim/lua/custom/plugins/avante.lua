@@ -27,6 +27,7 @@ return {
   },
   opts = {
     provider = 'openai', -- Set to 'openai' since the proxy mimics OpenAI API
+    auto_suggestions = true,
   },
   config = function()
     require 'custom.avante'
