@@ -112,8 +112,10 @@ end, { desc = '[S]earch [N]eovim files' })
 vim.keymap.set('n', '<leader>sd', function()
   local home = os.getenv 'HOME'
   local dotfiles_path = success and shopify_config.dotfiles_path or (home .. '/dotfiles')
+
+  print(dotfiles_path)
   require('telescope.builtin').find_files {
-    cwd = dotfiles_path .. '/dotfiles',
+    cwd = dotfiles_path,
     hidden = true,
     no_ignore = true,
   }

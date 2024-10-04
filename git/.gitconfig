@@ -79,7 +79,7 @@
 	clean = git-lfs clean -- %f
 	smudge = git-lfs smudge -- %f
 [core]
-	editor = code -w
+	editor = nvim
 [pull]
 	rebase = true
 
