@@ -50,47 +50,42 @@ return {
       },
     },
   },
+
   {
     'nvim-tree/nvim-tree.lua',
     dependencies = {
       'nvim-tree/nvim-web-devicons',
+      'b0o/nvim-tree-preview.lua',
     },
     opts = {
       disable_netrw = true,
       hijack_netrw = true,
       auto_reload_on_write = false,
       actions = {
-        open_file = {
-          resize_window = true,
-          window_picker = {
-            enable = false,
-          },
-        },
+        open_file = { resize_window = true, window_picker = { enable = false } },
       },
-      git = {
-        enable = false,
-        ignore = false,
-      },
+      git = { enable = false, ignore = false },
       view = {
         relativenumber = true,
         float = {
           enable = true,
           open_win_config = function()
-            local screen_w = vim.opt.columns:get()
-            local screen_h = vim.opt.lines:get() - vim.opt.cmdheight:get()
-            local window_w = screen_w * 0.5
-            local window_h = screen_h * 0.8
-            local window_w_int = math.floor(window_w)
-            local window_h_int = math.floor(window_h)
+            local columns = vim.opt.columns:get()
+            local lines = vim.opt.lines:get()
+            local cmdheight = vim.opt.cmdheight:get()
+            local screen_w = columns
+            local screen_h = lines - cmdheight
+            local window_w = math.floor(screen_w * 0.5)
+            local window_h = math.floor(screen_h * 0.8)
             local center_x = (screen_w - window_w) / 2
-            local center_y = ((vim.opt.lines:get() - window_h) / 2) - vim.opt.cmdheight:get()
+            local center_y = (screen_h - window_h) / 2
             return {
               border = 'rounded',
               relative = 'editor',
               row = center_y,
               col = center_x,
-              width = window_w_int,
-              height = window_h_int,
+              width = window_w,
+              height = window_h,
             }
           end,
         },
@@ -99,11 +94,48 @@ return {
         end,
       },
     },
-    keys = {
-      { '<C-n>', vim.cmd.NvimTreeToggle },
-      { '<leader>n', vim.cmd.NvimTreeFindFile },
-      { '<Esc><Esc>', vim.cmd.NvimTreeClose },
-    },
+    config = function(_, opts)
+      opts.on_attach = function(bufnr)
+        local api = require 'nvim-tree.api'
+        api.config.mappings.default_on_attach(bufnr)
+
+        local function keymap_opts(desc)
+          return { desc = 'nvim-tree: ' .. desc, buffer = bufnr, noremap = true, silent = true, nowait = true }
+        end
+
+        local preview = require 'nvim-tree-preview'
+
+        vim.keymap.set('n', 'P', preview.watch, keymap_opts 'Preview (Watch)')
+        -- vim.keymap.set('n', '<Esc>', preview.unwatch, keymap_opts 'Close Preview/Unwatch')
+
+        vim.keymap.set('n', '<Tab>', function()
+          local node = api.tree.get_node_under_cursor()
+          if node then
+            if node.type == 'directory' then
+              api.node.open.edit()
+            else
+              preview.node(node, { toggle_focus = true })
+            end
+          end
+        end, keymap_opts 'Preview')
+      end
+
+      require('nvim-tree').setup(opts)
+
+      local api = require 'nvim-tree.api'
+
+      vim.keymap.set('n', '<C-n>', function()
+        api.tree.toggle { find_file = true, focus = true }
+      end, { desc = 'Toggle NvimTree and Find File' })
+
+      vim.keymap.set('n', '<leader>n', function()
+        api.tree.find_file { open = true }
+      end, { desc = 'NvimTree Find File' })
+
+      vim.keymap.set('n', '<Esc>', function()
+        api.tree.close()
+      end, { desc = 'Close NvimTree' })
+    end,
   },
   { -- Collection of various small independent plugins/modules
     'echasnovski/mini.nvim',
