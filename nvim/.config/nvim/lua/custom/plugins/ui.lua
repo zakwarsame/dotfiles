@@ -132,7 +132,7 @@ return {
         api.tree.find_file { open = true }
       end, { desc = 'NvimTree Find File' })
 
-      vim.keymap.set('n', '<Esc>', function()
+      vim.keymap.set('n', '<Esc><Esc>', function()
         api.tree.close()
       end, { desc = 'Close NvimTree' })
     end,
