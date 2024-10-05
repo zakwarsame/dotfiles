@@ -64,6 +64,29 @@ local module = {
 			mods = "ALT"
 		end
 
+		-- fzf with scrollback - copies selected text to clipboard without printing
+		wezterm.on("trigger-fzf-with-scrollback", function(window, pane)
+			local text = pane:get_lines_as_text(pane:get_dimensions().scrollback_rows)
+
+			local name = os.tmpname()
+			local f = io.open(name, "w+")
+			f:write(text)
+			f:flush()
+			f:close()
+
+			local shell_command = 'selected=$(tac "' .. name .. '" | sed \'s/^[ \\t]*//;s/[ \\t]*$//\' | fzf); '
+			shell_command = shell_command .. 'echo "$selected" | ( '
+			shell_command = shell_command .. 'if command -v pbcopy >/dev/null 2>&1; then pbcopy; '
+			shell_command = shell_command .. 'elif command -v xclip >/dev/null 2>&1; then xclip -selection clipboard; '
+			shell_command = shell_command .. 'else echo "No clipboard command found" >&2; fi )\n'
+
+			-- Send the command to the pane
+			pane:send_text(shell_command)
+
+			wezterm.sleep_ms(1000)
+			os.remove(name)
+		end)
+
 		-- not working on wayland
 		config.enable_wayland = false
 		local keys = {
@@ -73,32 +96,12 @@ local module = {
 				action = act.CloseCurrentPane({ confirm = false }),
 			},
 
-			-- unsure why this doesn't work
-			-- {
-			-- 	key = "f",
-			-- 	mods = mods,
-			-- 	action = wezterm.action_callback(function(window, pane)
-			-- 		local scrollback = pane:get_lines_as_text()
-			-- 		local success, stdout, stderr = wezterm.run_child_process({
-			-- 			"/opt/homebrew/bin/fzf",
-			-- 			"--no-sort",
-			-- 			"--no-mouse",
-			-- 			"--exact",
-			-- 			"-i",
-			-- 			"--tac",
-			-- 			},
-			-- 			{ stdin = scrollback }
-			-- 		)
-			-- 		if success then
-			-- 			local selected_line = stdout:match("^%S+")
-			-- 			if selected_line then
-			-- 				pane:send_text(selected_line)
-			-- 			end
-			-- 		else
-			-- 			wezterm.log_error("Error running fzf: " .. stderr)
-			-- 		end
-			-- 	end),
-			-- },
+			{
+				key = "/",
+				mods = mods,
+				action = wezterm.action.EmitEvent("trigger-fzf-with-scrollback"),
+			},
+
 
 			-- CTRL-SHIFT-l activates the debug overlay
 			{ key = "L", mods = mods, action = wezterm.action.ShowDebugOverlay },
