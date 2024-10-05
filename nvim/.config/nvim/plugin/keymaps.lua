@@ -7,6 +7,9 @@ set('n', '[d', vim.diagnostic.goto_prev, { desc = 'Go to previous [D]iagnostic m
 set('n', ']d', vim.diagnostic.goto_next, { desc = 'Go to next [D]iagnostic message' })
 set('n', '<leader>e', vim.diagnostic.open_float, { desc = 'Show diagnostic [E]rror messages' })
 set('n', '<leader>q', vim.diagnostic.setloclist, { desc = 'Open diagnostic [Q]uickfix list' })
+set('n', '<leader>di', function()
+  vim.diagnostic.toggle()
+end, { desc = 'Toggle [D]iagnostics for current buffer' })
 set('t', '<Esc><Esc>', '<C-\\><C-n>', { desc = 'Exit terminal mode' })
 set('n', '<Left>', '<C-w><C-h>', { desc = 'Move focus to the left window' })
 set('n', '<Right>', '<C-w><C-l>', { desc = 'Move focus to the right window' })
@@ -29,8 +32,10 @@ end, { silent = true, buffer = bufnr })
 set('t', '<Esc><Esc>', '<C-\\><C-n>', { desc = 'Exit terminal mode' })
 
 -- moving windows
-set('n', '≥', '<C-w>5<', { silent = true })
-set('n', '≤', '<C-w>5>', { silent = true })
+set('n', '<leader>ml', '<C-w>5<', { silent = true })
+set('n', '<leader>mr', '<C-w>5>', { silent = true })
+set('n', '<leader>mu', '<C-w>5-', { silent = true })
+set('n', '<leader>md', '<C-w>5+', { silent = true })
 
 set('v', 'J', ":m '>+1<CR>gv=gv", { noremap = true, silent = true })
 set('v', 'K', ":m '<-2<CR>gv=gv", { noremap = true, silent = true })
