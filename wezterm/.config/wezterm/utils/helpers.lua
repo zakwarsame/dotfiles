@@ -24,6 +24,22 @@ local module = {
 		config.font_size = 14.0
 		config.font = wezterm.font("FiraCode Nerd Font", { weight = "Regular", italic = false })
 
+		-- background image
+		config.background = {
+			{
+				source = {
+					File = wezterm.home_dir .. "/dotfiles/wezterm/wallpapers/landscape.png",
+				},
+			},
+			{
+				source = {
+					Color = "rgba(28, 33, 39, 0.87)",
+				},
+				height = "100%",
+				width = "100%",
+			},
+		}
+
 		config.window_close_confirmation = "NeverPrompt"
 		config.window_decorations = "RESIZE"
 		config.default_cursor_style = "BlinkingBar"
