@@ -138,7 +138,11 @@ vim.keymap.set('n', '<leader>sd', function()
   }
 end, { desc = '[S]earch [D]otfiles' })
 
-vim.keymap.set('n', '<leader>sD', function()
-  local home = os.getenv 'HOME'
-  require('telescope.builtin').live_grep { cwd = success and shopify_config.dotfiles_path or (home .. '/dotfiles') }
-end, { desc = '[S]earch [D]otfiles' })
+vim.keymap.set(
+  'n',
+  '<leader>sD',
+  [[:lua require('telescope').extensions.live_grep_args.live_grep_args({ cwd = ]]
+    .. (success and 'shopify_config.dotfiles_path' or "(os.getenv('HOME') .. '/dotfiles')")
+    .. [[ })<CR>]],
+  { desc = '[S]earch [D]otfiles' }
+)
