@@ -27,11 +27,11 @@ set('n', '<leader>sx', '<cmd>close<CR>', { desc = 'Close current split' }) -- cl
 -- experimenting with stuff
 set('n', '<leader>x', '<cmd>source %<CR>', { desc = 'Execute the current file' })
 
--- rust keympas
-set('n', '<leader>a', function()
-  vim.cmd.RustLsp 'codeAction' -- supports rust-analyzer's grouping
-  -- or vim.lsp.buf.codeAction() if you don't want grouping.
-end, { silent = true, buffer = bufnr })
+-- -- rust keympas
+-- set('n', '<leader>a', function()
+--   vim.cmd.RustLsp 'codeAction' -- supports rust-analyzer's grouping
+--   -- or vim.lsp.buf.codeAction() if you don't want grouping.
+-- end, { silent = true, buffer = bufnr })
 -- Swap capslock and esc key
 set('t', '<Esc><Esc>', '<C-\\><C-n>', { desc = 'Exit terminal mode' })
 
@@ -57,3 +57,33 @@ vim.api.nvim_create_autocmd('TextYankPost', {
 
 -- Dismiss Noice Message
 vim.keymap.set('n', '<leader>dn', '<cmd>NoiceDismiss<CR>', { desc = 'Dismiss Noice Message' })
+
+function CopyCodeBlock()
+  -- Save the current cursor position
+  local cursor_pos = vim.fn.getpos '.'
+
+  -- Search for the start of the code block
+  local start_line = vim.fn.search('```', 'bcnW')
+  if start_line == 0 then
+    print 'No code block found'
+    return
+  end
+
+  -- Search for the end of the code block
+  local end_line = vim.fn.search('```', 'nW')
+  if end_line == 0 then
+    print 'End of code block not found'
+    return
+  end
+
+  -- Yank the lines between the backticks
+  vim.cmd(string.format('silent %d,%dyank', start_line + 1, end_line - 1))
+
+  -- Restore the cursor position
+  vim.fn.setpos('.', cursor_pos)
+
+  print 'Code block copied to clipboard!'
+end
+
+-- Set up the keymap
+vim.api.nvim_set_keymap('n', '<leader>yc', ':lua CopyCodeBlock()<CR>', { noremap = true, silent = true })

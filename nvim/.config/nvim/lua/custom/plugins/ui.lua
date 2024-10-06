@@ -142,6 +142,7 @@ return {
     config = function()
       require('mini.ai').setup { n_lines = 500 }
       require('mini.pairs').setup()
+      require('mini.pick').setup()
       -- Add/delete/replace surroundings (brackets, quotes, etc.)
       --
       -- - saiw) - [S]urround [A]dd [I]nner [W]ord [)]Paren
