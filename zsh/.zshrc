@@ -1,6 +1,6 @@
 # This script is the entrypoint for all shell environment config.
 
-echo "Running install.sh"
+# echo "Running install.sh"
 export DOTFILES_DIRECTORY_NAME="dotfiles"
 export DF_HOME=~/$DOTFILES_DIRECTORY_NAME
 export DF_ZSH=$DF_HOME/zsh

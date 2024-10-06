@@ -2,12 +2,9 @@ DOTFILES_DIRECTORY_NAME="dotfiles"
 DF_ZSH=~/$DOTFILES_DIRECTORY_NAME/zsh
 
 # pokemon colorscripts
-if [ -e /usr/local/bin/pokemon-colorscripts/usr/bin/pokemon-colorscripts ]; then
-  pokemon-colorscripts --no-title -s -r
-fi
-
-# enable if not using kitty
-# (cat ~/.cache/wal/sequences &)
+# if [ -e /usr/local/bin/pokemon-colorscripts ]; then
+#   pokemon-colorscripts --no-title -s -r
+# fi
 
 # eval $(dircolors $DF_ZSH/dircolors)
 alias ls='ls --color=auto'
@@ -46,3 +43,18 @@ fi
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 # [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 [[ ! -f $DF_ZSH/.p10k.zsh ]] || source $DF_ZSH/.p10k.zsh
+
+# fzf stuff
+eval "$(fzf --zsh)"
+
+export FZF_DEFAULT_COMMAND="fd --hidden --strip-cwd-prefix --exclude .git"
+export FZF_DEFAULT_OPTS="--height 40% --layout=reverse --border"
+export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
+export FZF_ALT_C_COMMAND="$FZF_DEFAULT_COMMAND --type d"
+
+# zoxide
+eval "$(zoxide init zsh)"
+alias cd="z"
+
+# eza
+alias l="eza --color=always --icons=always --group-directories-first --long --git --all"

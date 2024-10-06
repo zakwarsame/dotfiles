@@ -8,7 +8,11 @@ set('n', ']d', vim.diagnostic.goto_next, { desc = 'Go to next [D]iagnostic messa
 set('n', '<leader>e', vim.diagnostic.open_float, { desc = 'Show diagnostic [E]rror messages' })
 set('n', '<leader>q', vim.diagnostic.setloclist, { desc = 'Open diagnostic [Q]uickfix list' })
 set('n', '<leader>di', function()
-  vim.diagnostic.toggle()
+  if vim.diagnostic.is_enabled() then
+    vim.diagnostic.enable(false)
+  else
+    vim.diagnostic.enable(true)
+  end
 end, { desc = 'Toggle [D]iagnostics for current buffer' })
 set('t', '<Esc><Esc>', '<C-\\><C-n>', { desc = 'Exit terminal mode' })
 set('n', '<Left>', '<C-w><C-h>', { desc = 'Move focus to the left window' })

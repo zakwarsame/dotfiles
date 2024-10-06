@@ -51,8 +51,6 @@ export PATH="${PATH}:~/.local/lib/python3.9/site-packages"
 defaults write NSGlobalDomain KeyRepeat -int 1
 defaults write NSGlobalDomain InitialKeyRepeat -int 12
 
-eval "$(zoxide init zsh)"
-
 # Show hidden files in finder. I want to see everything.
 defaults write com.apple.finder AppleShowAllFiles YES
 export MYOS=macos
