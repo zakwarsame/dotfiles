@@ -22,3 +22,9 @@ matches:
     replace: |-
       %bd|e#|bd#
     force_clipboard: true
+
+  - trigger: ";sr"
+    label: "Search and replace cfdo"
+    replace: |-
+      cfdo %s/$|$/ /g | update | bd
+    force_clipboard: true

@@ -79,23 +79,24 @@ stow_configs() {
     local home_packages=("git" "zsh")
 
     for package in "${config_packages[@]}"; do
-        case "$package" in
-            espanso)
-                if [[ "$OS" == "linux" ]]; then
-                    target="$HOME"
-                elif [[ "$OS" == "macos" ]]; then
-                    target="$HOME/Library/Application Support"
-                else
-                    echo "Unsupported OS for Espanso configuration."
-                    continue
-                fi
-                ;;
-            *)
-                target="$HOME"
-                ;;
-        esac
-        stow --dir="$DOTFILES_DIR" --target="$target" --restow "$package"
-        echo "Stowed $package to $target"
+        if [[ "$package" == "espanso" ]]; then
+            if [[ "$OS" == "linux" ]]; then
+                target="$HOME/.config"
+            elif [[ "$OS" == "macos" ]]; then
+                mkdir -p "$HOME/Library/Application Support/espanso"
+                target="$HOME/Library/Application Support/espanso"
+            else
+                echo "Unsupported OS for Espanso configuration."
+                continue
+            fi
+            source_dir="$DOTFILES_DIR/espanso/.config"
+            stow --dir="$source_dir" --target="$target" --restow "espanso"
+            echo "Stowed $package to $target"
+        else
+            target="$HOME"
+            stow --dir="$DOTFILES_DIR" --target="$target" --restow "$package"
+            echo "Stowed $package to $target"
+        fi
     done
 
     for package in "${home_packages[@]}"; do
