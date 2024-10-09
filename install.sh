@@ -162,6 +162,9 @@ main() {
     install_antidote
     install_stow
 
+    #zoxide
+    curl -sSfL https://raw.githubusercontent.com/ajeetdsouza/zoxide/main/install.sh | sh
+
     cd "$DOTFILES_DIR" || exit
 
     backup_configs
