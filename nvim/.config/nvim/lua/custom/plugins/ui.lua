@@ -156,7 +156,7 @@ return {
     opts = {
       options = {
         theme = 'tokyonight',
-        icons_enabled = false,
+        icons_enabled = true,
       },
       sections = {
         lualine_a = { 'mode' },
