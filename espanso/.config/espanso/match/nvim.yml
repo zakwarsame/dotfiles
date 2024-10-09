@@ -28,3 +28,9 @@ matches:
     replace: |-
       cfdo %s/$|$/ /g | update | bd
     force_clipboard: true
+
+  - trigger: ";tst"
+    label: "no test"
+    replace: |-
+      --iglob "!*test*"
+    force_clipboard: true
