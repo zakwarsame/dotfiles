@@ -40,7 +40,7 @@ local module = {
 			},
 		}
 
-		config.window_close_confirmation = "NeverPrompt"
+		config.window_close_confirmation = "AlwaysPrompt"
 		config.window_decorations = "RESIZE"
 		config.default_cursor_style = "BlinkingBar"
 		config.macos_window_background_blur = 40
@@ -74,10 +74,10 @@ local module = {
 			f:flush()
 			f:close()
 
-			local shell_command = 'selected=$(tac "' .. name .. '" | sed \'s/^[ \\t]*//;s/[ \\t]*$//\' | fzf); '
+			local shell_command = 'selected=$(tac "' .. name .. "\" | sed 's/^[ \\t]*//;s/[ \\t]*$//' | fzf); "
 			shell_command = shell_command .. 'echo "$selected" | ( '
-			shell_command = shell_command .. 'if command -v pbcopy >/dev/null 2>&1; then pbcopy; '
-			shell_command = shell_command .. 'elif command -v xclip >/dev/null 2>&1; then xclip -selection clipboard; '
+			shell_command = shell_command .. "if command -v pbcopy >/dev/null 2>&1; then pbcopy; "
+			shell_command = shell_command .. "elif command -v xclip >/dev/null 2>&1; then xclip -selection clipboard; "
 			shell_command = shell_command .. 'else echo "No clipboard command found" >&2; fi )\n'
 
 			-- Send the command to the pane
@@ -101,7 +101,6 @@ local module = {
 				mods = mods,
 				action = wezterm.action.EmitEvent("trigger-fzf-with-scrollback"),
 			},
-
 
 			-- CTRL-SHIFT-l activates the debug overlay
 			{ key = "L", mods = mods, action = wezterm.action.ShowDebugOverlay },
