@@ -104,9 +104,13 @@ return {
         end
 
         local preview = require 'nvim-tree-preview'
+        vim.schedule(function()
+          vim.api.nvim_buf_call(bufnr, function()
+            preview.watch()
+          end)
+        end)
 
         vim.keymap.set('n', 'P', preview.watch, keymap_opts 'Preview (Watch)')
-        -- vim.keymap.set('n', '<Esc>', preview.unwatch, keymap_opts 'Close Preview/Unwatch')
 
         vim.keymap.set('n', '<Tab>', function()
           local node = api.tree.get_node_under_cursor()
