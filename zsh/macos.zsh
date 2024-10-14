@@ -34,7 +34,6 @@ setwallpaper() {
 launchctl setenv KITTY_CONFIG_DIRECTORY ~/$DOTFILES_DIRECTORY_NAME/kitty/.config/kitty
 # set zellij config directory to dotfiles
 launchctl setenv ZELLIJ_CONFIG_DIR ~/$DOTFILES_DIRECTORY_NAME/zellij/.config/zellij
-export EDITOR=nvim
 
 
 # from core/macos.zsh
