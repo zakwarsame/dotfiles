@@ -108,15 +108,17 @@ stow_configs() {
 setup_linux_configs() {
     echo "Configuring Linux-specific settings..."
 
-    # keyd configuration
-    if [ -d "/etc/keyd" ]; then
-        sudo cp -a "/etc/keyd" "$BACKUP_DIR/"
-        sudo rm -rf "/etc/keyd"
-        sudo stow --dir="$DOTFILES_DIR" --target="/etc/keyd" --restow keyd
-        echo "Stowed keyd configuration to /etc/keyd"
-    else
-        echo "Keyd directory not found. Skipping keyd configuration."
+    if [ -f "/etc/keyd/default.conf" ]; then
+        echo "Backing up existing /etc/keyd/default.conf to $BACKUP_DIR"
+        sudo mkdir -p "$BACKUP_DIR/etc/keyd"
+        sudo cp "/etc/keyd/default.conf" "$BACKUP_DIR/etc/keyd/"
     fi
+
+    sudo rm -f "/etc/keyd/default.conf"
+    sudo mkdir -p "/etc/keyd"
+
+    sudo ln -s "$DOTFILES_DIR/keyd/default.conf" "/etc/keyd/default.conf"
+    echo "Linked $DOTFILES_DIR/keyd/default.conf to /etc/keyd/default.conf"
 }
 
 setup_macos_configs() {
