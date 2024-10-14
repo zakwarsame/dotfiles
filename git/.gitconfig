@@ -3,10 +3,10 @@
 	path = ~/.gitconfig.local
 
 [includeIf "env:MYOS=macos"]
-    path = ~/.gitconfig-macos
+    path = ~/.gitconfig_macos
 
 [includeIf "env:MYOS=linux"]
-    path = ~/.gitconfig-linux
+    path = ~/.gitconfig_linux
 
 [alias]
     a = add
