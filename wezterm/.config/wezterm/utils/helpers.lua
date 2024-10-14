@@ -33,7 +33,7 @@ local module = {
 			},
 			{
 				source = {
-					Color = "rgba(28, 33, 39, 0.87)",
+					Color = "rgba(28, 33, 39, 0.81)",
 				},
 				height = "100%",
 				width = "100%",
@@ -76,7 +76,8 @@ local module = {
 
 			local shell_command = 'selected=$(tac "' .. name .. "\" | sed 's/^[ \\t]*//;s/[ \\t]*$//' | fzf); "
 			shell_command = shell_command .. 'echo "$selected" | ( '
-			shell_command = shell_command .. "if command -v pbcopy >/dev/null 2>&1; then pbcopy; "
+			shell_command = shell_command .. "if command -v wl-copy >/dev/null 2>&1; then wl-copy; "
+			shell_command = shell_command .. "elif command -v pbcopy >/dev/null 2>&1; then pbcopy; "
 			shell_command = shell_command .. "elif command -v xclip >/dev/null 2>&1; then xclip -selection clipboard; "
 			shell_command = shell_command .. 'else echo "No clipboard command found" >&2; fi )\n'
 
@@ -94,6 +95,11 @@ local module = {
 				key = "w",
 				mods = mods,
 				action = act.CloseCurrentPane({ confirm = false }),
+			},
+			{
+				key = "r",
+				mods = mods,
+				action = wezterm.action.ReloadConfiguration,
 			},
 
 			{
