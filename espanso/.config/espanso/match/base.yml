@@ -95,3 +95,11 @@ matches:
   - trigger: ";open"
     label: "open ai server"
     replace: "dev cd openai-proxy && dev s"
+
+  - trigger: ";hypron"
+    label: "hyprshade on blue light"
+    replace: "hyprshade on blue-light-filter"
+
+  - trigger: ";hyproff"
+    label: "hyprshade off blue light"
+    replace: "hyprshade off"
