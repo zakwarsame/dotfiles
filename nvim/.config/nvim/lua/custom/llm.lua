@@ -12,6 +12,13 @@ function M.get_lines_until_cursor()
   return table.concat(lines, '\n')
 end
 
+function M.get_all_lines()
+  local current_buffer = vim.api.nvim_get_current_buf()
+  local line_count = vim.api.nvim_buf_line_count(current_buffer)
+  local lines = vim.api.nvim_buf_get_lines(current_buffer, 0, line_count, false)
+  return table.concat(lines, '\n')
+end
+
 function M.get_visual_selection()
   local _, srow, scol = unpack(vim.fn.getpos 'v')
   local _, erow, ecol = unpack(vim.fn.getpos '.')
@@ -50,9 +57,10 @@ end
 function M.make_spec_curl_args(opts, prompt, system_prompt)
   local url = opts.url and os.getenv(opts.url)
   local api_key = opts.api_key_name and os.getenv(opts.api_key_name)
+  local model = opts.model and os.getenv(opts.model)
   local data = {
     messages = { { role = 'system', content = system_prompt }, { role = 'user', content = prompt } },
-    model = opts.model,
+    model = model,
     stream = true,
   }
   local args = { '-N', '-X', 'POST', '-H', 'Content-Type: application/json', '-d', vim.json.encode(data) }
@@ -62,6 +70,37 @@ function M.make_spec_curl_args(opts, prompt, system_prompt)
   end
   table.insert(args, url)
   return args
+end
+
+function M.make_anthropic_spec_curl_args(opts, prompt, system_prompt)
+  local url = opts.url and os.getenv(opts.url)
+  local api_key = opts.api_key_name and os.getenv(opts.api_key_name)
+  local model = opts.model and os.getenv(opts.model)
+  local data = {
+    system = system_prompt,
+    messages = { { role = 'user', content = prompt } },
+    model = model,
+    stream = true,
+    max_tokens = 4096,
+  }
+  local args = { '-N', '-X', 'POST', '-H', 'Content-Type: application/json', '-d', vim.json.encode(data) }
+  if api_key then
+    table.insert(args, '-H')
+    table.insert(args, 'x-api-key: ' .. api_key)
+    table.insert(args, '-H')
+    table.insert(args, 'anthropic-version: 2023-06-01')
+  end
+  table.insert(args, url)
+  return args
+end
+
+function M.handle_anthropic_spec_data(data_stream, event_state)
+  if event_state == 'content_block_delta' then
+    local json = vim.json.decode(data_stream)
+    if json.delta and json.delta.text then
+      M.write_string_at_cursor(json.delta.text)
+    end
+  end
 end
 
 function M.write_string_at_cursor(str)
@@ -84,10 +123,13 @@ end
 
 local function get_prompt(opts)
   local replace = opts.replace
+  local help_mode = opts.help_mode
   local visual_lines = M.get_visual_selection()
   local prompt = ''
 
-  if visual_lines then
+  if help_mode then
+    prompt = M.get_all_lines()
+  elseif visual_lines then
     prompt = table.concat(visual_lines, '\n')
     if replace then
       vim.api.nvim_command 'normal! d'
@@ -122,6 +164,11 @@ function M.invoke_llm_and_stream_into_editor(opts, make_curl_args_fn, handle_dat
   local system_prompt = opts.system_prompt or 'Yell at me for not setting my configuration for my llm plugin correctly'
   local args = make_curl_args_fn(opts, prompt, system_prompt)
   local curr_event_state = nil
+
+  if opts.help_mode then
+    vim.api.nvim_buf_set_lines(0, -1, -1, false, { '' }) -- Add a new line at the end of the buffer
+    vim.api.nvim_win_set_cursor(0, { vim.api.nvim_buf_line_count(0), 0 }) -- Move cursor to the end of the buffer
+  end
 
   local function parse_and_call(line)
     local event = line:match '^event: (.+)$'

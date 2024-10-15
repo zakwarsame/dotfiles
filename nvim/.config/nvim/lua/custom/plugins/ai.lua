@@ -32,7 +32,7 @@ return {
       local function anthropic_help()
         llm.invoke_llm_and_stream_into_editor({
           url = 'LLM_PROXY',
-          model = 'anthropic:claude-3-5-sonnet',
+          model = 'LLM_MODEL',
           api_key_name = 'ANTHROPIC_API_KEY',
           system_prompt = helpful_prompt,
           replace = false,
@@ -42,31 +42,58 @@ return {
       local function anthropic_replace()
         llm.invoke_llm_and_stream_into_editor({
           url = 'LLM_PROXY',
-          model = 'anthropic:claude-3-5-sonnet',
+          model = 'LLM_MODEL',
           api_key_name = 'ANTHROPIC_API_KEY',
           system_prompt = system_prompt,
           replace = true,
         }, llm.make_spec_curl_args, llm.handle_spec_data)
       end
 
+      local function non_proxy_anthropic_replace()
+        llm.invoke_llm_and_stream_into_editor({
+          url = 'LLM_PROXY',
+          model = 'LLM_MODEL',
+          api_key_name = 'ANTHROPIC_API_KEY',
+          system_prompt = system_prompt,
+          replace = true,
+        }, llm.make_anthropic_spec_curl_args, llm.handle_anthropic_spec_data)
+      end
+
+      local function non_proxy_anthropic_help()
+        llm.invoke_llm_and_stream_into_editor({
+          url = 'LLM_PROXY',
+          model = 'LLM_MODEL',
+          api_key_name = 'ANTHROPIC_API_KEY',
+          system_prompt = helpful_prompt,
+          replace = false,
+        }, llm.make_anthropic_spec_curl_args, llm.handle_anthropic_spec_data)
+      end
+
       vim.keymap.set({ 'n', 'v' }, '<leader>L', anthropic_help, { desc = 'llm anthropic_help' })
       vim.keymap.set({ 'n', 'v' }, '<leader>l', anthropic_replace, { desc = 'llm anthropic' })
       vim.keymap.set({ 'n', 'v' }, '<leader>P', openai_help, { desc = 'llm openai' })
       vim.keymap.set({ 'n', 'v' }, '<leader>p', openai_replace, { desc = 'llm openai' })
+
+      vim.keymap.set({ 'n', 'v' }, '<leader>;l', non_proxy_anthropic_replace, { desc = 'llm anthropic' })
+      vim.keymap.set({ 'n', 'v' }, '<leader>;L', non_proxy_anthropic_help, { desc = 'llm anthropic' })
     end,
   },
   {
     'yetone/avante.nvim',
     event = 'VeryLazy',
     lazy = false,
-    build = ':AvanteBuild source=false',
+    version = false, -- set this if you want to always pull the latest change
+    -- if you want to build from source then do `make BUILD_FROM_SOURCE=true`
+    build = 'make',
+    -- build = "powershell -ExecutionPolicy Bypass -File Build.ps1 -BuildFromSource false" -- for windows
     dependencies = {
+      'nvim-treesitter/nvim-treesitter',
       'stevearc/dressing.nvim',
       'nvim-lua/plenary.nvim',
       'MunifTanjim/nui.nvim',
-      'nvim-tree/nvim-web-devicons',
-      'zbirenbaum/copilot.lua',
-      'MeanderingProgrammer/render-markdown.nvim',
+      --- The below dependencies are optional,
+      'nvim-tree/nvim-web-devicons', -- or echasnovski/mini.icons
+      'zbirenbaum/copilot.lua', -- for providers='copilot'
       {
         'HakonHarnes/img-clip.nvim',
         event = 'VeryLazy',
@@ -81,9 +108,16 @@ return {
           },
         },
       },
+      {
+        'MeanderingProgrammer/render-markdown.nvim',
+        opts = {
+          file_types = { 'markdown', 'Avante' },
+        },
+        ft = { 'markdown', 'Avante' },
+      },
     },
     opts = {
-      provider = 'openai', -- Set to 'openai' since the proxy mimics OpenAI API
+      provider = 'openai',
       auto_suggestions = true,
     },
     config = function()
