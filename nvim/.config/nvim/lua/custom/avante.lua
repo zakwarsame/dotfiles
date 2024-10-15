@@ -21,12 +21,15 @@ require('avante').setup {
   },
   behaviour = {
     auto_suggestions = true,
+    -- auto_suggestions = false,
   },
   hints = {
     enabled = false,
   },
   provider = 'local_proxy',
+  -- provider = 'claude',
   auto_suggestions_provider = 'local_proxy',
+  -- auto_suggestions_provider = 'claude',
   vendors = {
     ['local_proxy'] = {
       endpoint = 'http://127.0.0.1:8787/v3/v1/',
