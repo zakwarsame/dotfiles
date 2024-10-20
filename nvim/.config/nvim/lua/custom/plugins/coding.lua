@@ -207,4 +207,14 @@ return {
       end, { desc = 'Open harpoon window' })
     end,
   },
+
+  -- wezterm-nvim movement/navigation
+  {
+    'mrjones2014/smart-splits.nvim',
+    config = function()
+      require('smart-splits').setup({
+        mux = 'wezterm',
+      })
+    end,
+  },
 }
