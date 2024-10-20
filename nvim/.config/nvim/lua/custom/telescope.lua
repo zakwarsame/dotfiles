@@ -15,8 +15,27 @@ require('telescope').setup {
   -- },
   pickers = {
     find_files = {
-      -- `hidden = true` will still show the inside of `.git/` as it's not `.gitignore`d.
-      find_command = { 'rg', '--files', '--hidden', '--glob', '!**/.git/*' },
+      hidden = true, -- will still show the inside of `.git/` as it's not `.gitignore`d.
+      find_command = {
+        'rg',
+        '--files',
+        -- search files that are in ignored by git
+        '--unrestricted',
+        -- follow symlinks
+        '--follow',
+        -- don't search logs
+        '--glob',
+        '!log',
+        -- don't search node modules
+        '--glob',
+        '!node_modules',
+        -- don't search tmp directory
+        '--glob',
+        '!tmp',
+        -- don't search .git directory
+        '--glob',
+        '!.git',
+      },
     },
     git_branches = {
       mappings = {
@@ -42,6 +61,28 @@ require('telescope').setup {
           ['<C-w>'] = lga_actions.quote_prompt { postfix = ' -w ' },
         },
       },
+      -- layout_config = { mirror=true }, -- mirror preview pane
+      hidden = true,
+      additional_args = function(_)
+        return {
+          -- search files that are in ignored by git
+          '--unrestricted',
+          -- follow symlinks
+          '--follow',
+          -- don't search logs
+          '--glob',
+          '!log',
+          -- don't search node modules
+          '--glob',
+          '!node_modules',
+          -- don't search tmp directory
+          '--glob',
+          '!tmp',
+          -- don't search .git directory
+          '--glob',
+          '!.git',
+        }
+      end,
     },
   },
   defaults = {
