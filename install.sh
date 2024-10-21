@@ -123,6 +123,7 @@ setup_linux_configs() {
 
 setup_macos_configs() {
     echo "Configuring macOS-specific settings..."
+    setup_nix_config
 }
 
 setup_shopify_configs() {
@@ -158,6 +159,22 @@ setup_shopify_espanso() {
     mkdir -p "$espanso_dir"
     cp "$DOTFILES_DIR/shopify-dotfiles/match/shopify.yml" "$espanso_dir/"
     echo "Shopify Espanso configurations updated."
+}
+
+setup_nix_config() {
+    echo "Setting up Nix configuration..."
+    
+    mkdir -p "$HOME/nix"
+    
+    cp -R "$DOTFILES_DIR/nix/darwin/nix"/* "$HOME/nix/"
+    
+    if ! command -v nix &> /dev/null; then
+        echo "Nix is not installed. Please install Nix before proceeding."
+        echo "Visit https://nixos.org/download.html for installation instructions."
+    else
+        echo "Nix configuration files have been copied to ~/nix"
+        echo "You may need to rebuild your Nix environment using 'darwin-rebuild switch' or similar command."
+    fi
 }
 
 main() {
