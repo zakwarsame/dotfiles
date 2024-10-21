@@ -163,17 +163,22 @@ setup_shopify_espanso() {
 
 setup_nix_config() {
     echo "Setting up Nix configuration..."
-    
-    mkdir -p "$HOME/nix"
-    
-    cp -R "$DOTFILES_DIR/nix/darwin/nix"/* "$HOME/nix/"
-    
+
     if ! command -v nix &> /dev/null; then
         echo "Nix is not installed. Please install Nix before proceeding."
         echo "Visit https://nixos.org/download.html for installation instructions."
     else
-        echo "Nix configuration files have been copied to ~/nix"
-        echo "You may need to rebuild your Nix environment using 'darwin-rebuild switch' or similar command."
+        local src_dir="$DOTFILES_DIR/nix/darwin/nix"
+        local target_dir="$HOME/nix"
+
+        if [ ! -d "$src_dir" ]; then
+            echo "Nix config files not found in $src_dir."
+            return
+        fi
+
+        mkdir -p "$target_dir"
+        stow --dir="$src_dir" --target="$target_dir" --restow .
+        echo "Nix config files symlinked to ~/nix (need to run 'darwin-rebuild switch' to apply changes)"
     fi
 }
 
