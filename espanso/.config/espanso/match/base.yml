@@ -103,3 +103,7 @@ matches:
   - trigger: ";hoff"
     label: "hyprshade off blue light"
     replace: "hyprshade off"
+
+  - trigger: ";translation"
+    label: "Generate index translations"
+    replace: "pnpm translations:generate-index-files"
