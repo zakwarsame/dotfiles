@@ -55,6 +55,10 @@
         done
             '';
 
+      system.defaults = {
+        dock.autohide = true;
+        finder.FXPreferredViewStyle = "clmv";
+      };
       # Auto upgrade nix package and the daemon service.
       services.nix-daemon.enable = true;
       # nix.package = pkgs.nix;
@@ -63,8 +67,26 @@
       nix.settings.experimental-features = "nix-command flakes";
 
       # Create /etc/zshrc that loads the nix-darwin environment.
-      programs.zsh.enable = true;  # default shell on catalina
+      # programs.zsh.enable = true;  # default shell on catalina
       # programs.fish.enable = true;
+
+      programs.zsh = {
+        enable = true;
+        interactiveShellInit = ''
+          # Source dev.sh if it exists
+          [ -f /opt/dev/dev.sh ] && source /opt/dev/dev.sh
+
+          # Setup chruby
+          [[ -f /opt/dev/sh/chruby/chruby.sh ]] && { 
+            type chruby >/dev/null 2>&1 || 
+            chruby () { 
+              source /opt/dev/sh/chruby/chruby.sh
+              chruby "$@"
+            }
+          }
+
+        '';
+      };
 
       # Set Git commit hash for darwin-version.
       system.configurationRevision = self.rev or self.dirtyRev or null;
@@ -89,7 +111,7 @@
             # Install Homebrew under the default prefix
             enable = true;
             # Apple Silicon Only: Also install Homebrew under the default Intel prefix for Rosetta 2
-            enableRosetta = true;
+            enableRosetta = false;
             # User owning the Homebrew prefix
             user = "zak";
 
