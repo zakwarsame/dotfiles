@@ -27,10 +27,11 @@ alias pr='gh pr list --author "@me" --state OPEN --search "is:pr archived:false"
 # git fixum
 alias gcf='git commit --fixup "$(git log --oneline | fzf --no-sort | awk "{print \$1}")"'
 
-alias refresh='dev reup && dev restart'
+alias refresh='dev reup && dev restart --all'
 #
 # shopify
 alias dcw='dev cd web//admin-web' 
+alias dcs='dev cd shopify'
 alias dcl='dev clone web//admin-web'
 
 # Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.

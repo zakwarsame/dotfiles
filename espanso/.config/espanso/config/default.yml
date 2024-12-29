@@ -29,8 +29,7 @@
 # --- Auto-restart
 
 # Enable/disable the config auto-reload after a file change is detected.
-# auto_restart: false
-
+auto_restart: true
 # --- Clipboard threshold
 
 # Because injecting long texts char-by-char is a slow operation, espanso automatically
@@ -39,4 +38,5 @@
 
 # For a list of all the available options, visit the official docs at: https://espanso.org/docs/
 
+# ONLY FOR LINUX
 search_shortcut: META+SPACE

@@ -14,7 +14,6 @@ set('n', '<leader>di', function()
     vim.diagnostic.enable(true)
   end
 end, { desc = 'Toggle [D]iagnostics for current buffer' })
-set('t', '<Esc><Esc>', '<C-\\><C-n>', { desc = 'Exit terminal mode' })
 set('n', '<Left>', '<C-w><C-h>', { desc = 'Move focus to the left window' })
 set('n', '<Right>', '<C-w><C-l>', { desc = 'Move focus to the right window' })
 set('n', '<Down>', '<C-w><C-j>', { desc = 'Move focus to the lower window' })
@@ -33,7 +32,6 @@ set('n', '<leader>x', '<cmd>source %<CR>', { desc = 'Execute the current file' }
 --   -- or vim.lsp.buf.codeAction() if you don't want grouping.
 -- end, { silent = true, buffer = bufnr })
 -- Swap capslock and esc key
-set('t', '<Esc><Esc>', '<C-\\><C-n>', { desc = 'Exit terminal mode' })
 
 -- moving windows
 set('n', '<leader>ml', '<C-w>5<', { silent = true })
