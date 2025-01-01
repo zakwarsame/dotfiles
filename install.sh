@@ -182,6 +182,32 @@ setup_nix_config() {
     fi
 }
 
+setup_editor_keybinds() {
+    echo "Setting up editor keybindings..."
+
+    local vscode_keybinds_dir
+    local cursor_keybinds_dir
+
+    if [[ "$OS" == "linux" ]]; then
+        vscode_keybinds_dir="$HOME/.config/Code/User"
+        cursor_keybinds_dir="$HOME/.config/Cursor/User"
+    elif [[ "$OS" == "macos" ]]; then
+        vscode_keybinds_dir="$HOME/Library/Application Support/Code/User"
+        cursor_keybinds_dir="$HOME/Library/Application Support/Cursor/User"
+    else
+        echo "Unsupported OS for editor keybindings"
+        return
+    fi
+
+    mkdir -p "$vscode_keybinds_dir"
+    ln -sf "$DOTFILES_DIR/experimental/keybinds.json" "$vscode_keybinds_dir/keybindings.json"
+
+    mkdir -p "$cursor_keybinds_dir"
+    ln -sf "$DOTFILES_DIR/experimental/keybinds.json" "$cursor_keybinds_dir/keybindings.json"
+
+    echo "Editor keybindings configured for $OS."
+}
+
 main() {
     install_antidote
     install_stow
@@ -190,7 +216,6 @@ main() {
     curl -sSfL https://raw.githubusercontent.com/ajeetdsouza/zoxide/main/install.sh | sh
 
     cd "$DOTFILES_DIR" || exit
-
     backup_configs
     remove_configs
     stow_configs
@@ -203,6 +228,7 @@ main() {
         echo "Unsupported OS for OS-specific configurations."
     fi
 
+    setup_editor_keybinds
     setup_shopify_configs
 
     echo "Dotfiles installation complete!"
