@@ -63,3 +63,10 @@ function su() {
     local service=${1%%:*}
     spin up $1 --wait -n $2 -c $service.branch=${3:-main}
 }
+
+# bun completions
+[ -s "/home/alchemy/.bun/_bun" ] && source "/home/alchemy/.bun/_bun"
+
+# bun
+export BUN_INSTALL="$HOME/.bun"
+export PATH="$BUN_INSTALL/bin:$PATH"

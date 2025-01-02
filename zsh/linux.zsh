@@ -6,3 +6,4 @@ if [ -e /usr/share/nvm/init-nvm.sh ]; then
 fi
 
 export MYOS=linux
+export LIBVIRT_DEFAULT_URI='qemu:///system'
