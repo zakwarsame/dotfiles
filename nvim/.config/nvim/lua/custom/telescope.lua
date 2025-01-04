@@ -179,6 +179,15 @@ vim.keymap.set('n', '<leader>sd', function()
   }
 end, { desc = '[S]earch [D]otfiles' })
 
+vim.keymap.set(
+  'n',
+  '<leader>sD',
+  [[:lua require('telescope').extensions.live_grep_args.live_grep_args({ cwd = ]]
+    .. (success and 'shopify_config.dotfiles_path' or "(os.getenv('HOME') .. '/dotfiles')")
+    .. [[ })<CR>]],
+  { desc = '[S]earch [D]otfiles' }
+)
+
 vim.keymap.set('n', '<leader>so', function()
   require('telescope.builtin').find_files {
     cwd = os.getenv 'HOME' .. '/Documents/obsidian-vault',
