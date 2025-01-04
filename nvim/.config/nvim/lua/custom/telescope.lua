@@ -162,7 +162,7 @@ vim.keymap.set('n', '<leader>s/', function()
   }
 end, { desc = '[S]earch [/] in Open Files' })
 
--- Shortcut for searching your Neovim configuration files
+-- Shortcut for searching Neovim configuration files
 vim.keymap.set('n', '<leader>sn', function()
   builtin.find_files { cwd = vim.fn.stdpath 'config' }
 end, { desc = '[S]earch [N]eovim files' })
@@ -179,11 +179,21 @@ vim.keymap.set('n', '<leader>sd', function()
   }
 end, { desc = '[S]earch [D]otfiles' })
 
-vim.keymap.set(
-  'n',
-  '<leader>sD',
-  [[:lua require('telescope').extensions.live_grep_args.live_grep_args({ cwd = ]]
-    .. (success and 'shopify_config.dotfiles_path' or "(os.getenv('HOME') .. '/dotfiles')")
-    .. [[ })<CR>]],
-  { desc = '[S]earch [D]otfiles' }
-)
+vim.keymap.set('n', '<leader>so', function()
+  require('telescope.builtin').find_files {
+    cwd = os.getenv 'HOME' .. '/Documents/obsidian-vault',
+    find_command = { 'rg', '--files', '--type', 'md' },
+  }
+end, { desc = '[S]earch [O]bsidian' })
+
+vim.keymap.set('n', '<leader>sO', function()
+  require('telescope').extensions.live_grep_args.live_grep_args {
+    cwd = os.getenv 'HOME' .. '/Documents/obsidian-vault',
+    additional_args = function()
+      return { '--type', 'md' }
+    end,
+  }
+end, { desc = '[S]earch [O]bsidian Content' })
+
+vim.keymap.set('n', '<leader>st', ':ObsidianTags<CR>', { desc = '[S]earch [T]ags' })
+vim.keymap.set('n', '<leader>od', ':ObsidianDailies<CR>', { desc = '[O]bsidian [D]ailies' })

@@ -53,7 +53,7 @@ tun()
 
 ##
 # Get current OS version and other information.
-v()
+os()
 {
 	case $OS in
 		osx)
@@ -184,10 +184,34 @@ get_hex ()
   echo $1 | hexdump
 }
 
-# grab open ai key
-copy_key() {
-  response=$(curl -s -X POST 'https://openai-proxy.shopify.io/hmac/personal' -H @headers.txt)
-  key=$(echo "$response" | jq -r '.key')
-  echo "$key" | pbcopy
-  echo "Key copied to clipboard."
+
+# obsidian nvim file creating
+ob() {
+    title="$*"
+    vault_dir=~/Documents/obsidian-vault/ghost
+
+    # Validate input and vault directory
+    if [ -z "$title" ]; then
+        echo "Error: Please provide a note title"
+        return 1
+    fi
+    
+    if [ ! -d "$vault_dir" ]; then
+        echo "Error: Obsidian vault directory not found!"
+        return 1
+    fi
+    
+    # Store current directory
+    original_dir=$(pwd)
+    cd "$vault_dir"
+    
+    # Create filename with timestamp for uniqueness
+    filename="$(date +%Y%m%d%H%M%S)-${title// /-}.md"
+    
+    touch "$filename"
+    # Open the new note in Neovim
+    nvim "$filename"
+    
+    # Return to original directory
+    cd "$original_dir"
 }
