@@ -1,6 +1,6 @@
 return {
   {
-    dir = '../../llm.lua',
+    dir = vim.fn.stdpath 'config' .. '/lua/custom',
     dependencies = { 'nvim-lua/plenary.nvim' },
     config = function()
       local system_prompt =
@@ -107,13 +107,6 @@ return {
             use_absolute_path = true,
           },
         },
-      },
-      {
-        'MeanderingProgrammer/render-markdown.nvim',
-        opts = {
-          file_types = { 'markdown', 'Avante' },
-        },
-        ft = { 'markdown', 'Avante' },
       },
     },
     opts = {

@@ -53,7 +53,7 @@ vim.api.nvim_create_autocmd('TextYankPost', {
   end,
 })
 
--- Dismiss Noice Message
+-- Dismiss Noice Message (notification)
 vim.keymap.set('n', '<leader>dn', '<cmd>NoiceDismiss<CR>', { desc = 'Dismiss Noice Message' })
 
 function CopyCodeBlock()
