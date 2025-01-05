@@ -4,8 +4,8 @@ keybind = alt+t=new_tab
 keybind = alt+w=close_surface
 keybind = alt+shift+]=next_tab
 keybind = alt+shift+[=next_tab
-keybind = alt+[=goto_split:next
-keybind = alt+]=goto_split:previous
+keybind = alt+]=goto_split:next
+keybind = alt+[=goto_split:previous
 
 keybind = alt+v=paste_from_clipboard
 keybind = alt+c=copy_to_clipboard

@@ -1,33 +1,26 @@
 theme = tokyonight
 
+# appearance
 font-family = Jetbrains Mono
 font-size = 13
-
-keybind = ctrl+z=close_surface
-
 background-opacity = 0.8
 background-blur-radius = 10
+cursor-style = bar
+cursor-style-blink = true
 
-
-macos-option-as-alt = true
-
+# layout
 window-decoration = false
 window-padding-y = 0
 window-padding-x = 0
 window-padding-color = extend
 window-padding-balance = true
 window-save-state = always
-
-
-confirm-close-surface = false
-
-# tabs
 gtk-tabs-location = bottom
 gtk-wide-tabs = false
 
-# cursor
-cursor-style = bar
-cursor-style-blink = true
+confirm-close-surface = false
+
+macos-option-as-alt = true
 
 # common keybinds
 keybind = ctrl+shift+]=move_tab:1
