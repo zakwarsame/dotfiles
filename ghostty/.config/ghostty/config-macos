@@ -1,0 +1,20 @@
+keybind = super+enter=new_split:right
+keybind = super+shift+enter=new_split:down
+keybind = super+t=new_tab
+keybind = super+w=close_surface
+keybind = super+shift+]=next_tab
+keybind = super+shift+[=next_tab
+keybind = super+[=goto_split:next
+keybind = super+]=goto_split:previous
+
+keybind = super+v=paste_from_clipboard
+keybind = super+c=copy_to_clipboard
+
+keybind = super+n=new_window
+
+keybind = ctrl+shift+plus=increase_font_size:1
+keybind = ctrl+shift+minus=decrease_font_size:1
+
+keybind = super+f=write_scrollback_file:open
+
+

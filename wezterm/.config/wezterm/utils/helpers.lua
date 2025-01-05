@@ -22,7 +22,7 @@ local module = {
 		-- appearance
 		config.color_scheme = scheme_for_appearance(get_appearance())
 		config.font_size = 14.0
-		config.font = wezterm.font("FiraCode Nerd Font", { weight = "Regular", italic = false })
+		config.font = wezterm.font("JetBrains Mono", { weight = "Regular", italic = false })
 
 		-- background image
 		config.background = {

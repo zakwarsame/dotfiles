@@ -59,8 +59,5 @@ alias cd="z"
 # eza
 alias l="eza --color=always --icons=always --group-directories-first --long --git --all"
 
-# nvim
-alias v="nvim ."
-
 # editor
 export EDITOR=nvim
