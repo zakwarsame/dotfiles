@@ -45,7 +45,7 @@ backup_configs() {
 remove_configs() {
     echo "Removing existing configurations..."
 
-    local config_packages=("nvim" "wezterm" "kitty" "aerospace" "espanso")
+    local config_packages=("nvim" "wezterm" "kitty" "aerospace" "espanso" "ghostty")
     for package in "${config_packages[@]}"; do
         case "$package" in
             espanso)
@@ -67,7 +67,7 @@ remove_configs() {
     done
 
     # remove individual files
-    rm -f "$HOME/.gitconfig" "$HOME/.gitignore_global"
+    rm -f "$HOME/.gitconfig" "$HOME/.gitconfig.local" "$HOME/.gitignore_global"
     rm -f "$HOME/.zshrc" "$HOME/.p10k.zsh" "$HOME/.zshenv"
     # remove Antidote plugins file
     rm -f "$HOME/.zsh/antidote.zsh_plugins.zsh"
@@ -75,7 +75,7 @@ remove_configs() {
 
 stow_configs() {
     echo "Stowing configurations..."
-    local config_packages=("nvim" "wezterm" "kitty" "aerospace" "espanso")
+    local config_packages=("nvim" "wezterm" "kitty" "aerospace" "espanso" "ghostty")
     local home_packages=("git" "zsh")
 
     for package in "${config_packages[@]}"; do
@@ -92,11 +92,17 @@ stow_configs() {
             source_dir="$DOTFILES_DIR/espanso/.config"
             stow --dir="$source_dir" --target="$target" --restow "espanso"
             echo "Stowed $package to $target"
+        elif [[ "$package" == "ghostty" ]]; then
+            target="$HOME/.config"
+            # Only stow the base config and OS-specific config
+            stow --dir="$DOTFILES_DIR" --target="$target" --restow "$package" \
+                --ignore="config-linux" --ignore="config-macos" \
+                --include="config" --include="config-$OS"
         else
             target="$HOME"
             stow --dir="$DOTFILES_DIR" --target="$target" --restow "$package"
-            echo "Stowed $package to $target"
         fi
+        echo "Stowed $package to $target"
     done
 
     for package in "${home_packages[@]}"; do
