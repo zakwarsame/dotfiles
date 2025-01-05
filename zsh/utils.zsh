@@ -185,6 +185,15 @@ get_hex ()
 }
 
 
+# Open Neovim in current directory or with specified args
+v() {
+    if [ $# -eq 0 ]; then
+        nvim .
+    else
+        nvim "$@"
+    fi
+}
+
 # obsidian nvim file creating
 ob() {
     title="$*"
