@@ -54,7 +54,13 @@ return {
         vim.keymap.set('n', keys, func, { buffer = bufnr, desc = 'LSP: ' .. desc })
       end
 
-      map('gd', require('telescope.builtin').lsp_definitions, '[G]oto [D]efinition')
+      map('gd', function()
+        if require('obsidian').util.cursor_on_markdown_link() then
+          return '<cmd>ObsidianFollowLink<CR>'
+        else
+          require('telescope.builtin').lsp_definitions()
+        end
+      end, '[G]oto [D]efinition')
       map('gr', require('telescope.builtin').lsp_references, '[G]oto [R]eferences')
 
       map('gI', require('telescope.builtin').lsp_implementations, '[G]oto [I]mplementation')

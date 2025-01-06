@@ -108,7 +108,7 @@ return {
 
       -- Only one of these is needed, not both.
       'nvim-telescope/telescope.nvim', -- optional
-      'ibhagwan/fzf-lua', -- optional
+      -- 'ibhagwan/fzf-lua', -- optional
     },
     -- config = true,
     config = function()
@@ -212,9 +212,9 @@ return {
   {
     'mrjones2014/smart-splits.nvim',
     config = function()
-      require('smart-splits').setup({
+      require('smart-splits').setup {
         mux = 'wezterm',
-      })
+      }
     end,
   },
 }
