@@ -81,7 +81,8 @@ stow_configs() {
     for package in "${config_packages[@]}"; do
         if [[ "$package" == "espanso" ]]; then
             if [[ "$OS" == "linux" ]]; then
-                target="$HOME/.config"
+                mkdir -p "$HOME/.config/espanso"
+                target="$HOME/.config/espanso"
             elif [[ "$OS" == "macos" ]]; then
                 mkdir -p "$HOME/Library/Application Support/espanso"
                 target="$HOME/Library/Application Support/espanso"
@@ -93,16 +94,27 @@ stow_configs() {
             stow --dir="$source_dir" --target="$target" --restow "espanso"
             echo "Stowed $package to $target"
         elif [[ "$package" == "ghostty" ]]; then
-            target="$HOME/.config"
-            # Only stow the base config and OS-specific config
-            stow --dir="$DOTFILES_DIR" --target="$target" --restow "$package" \
-                --ignore="config-linux" --ignore="config-macos" \
-                --include="config" --include="config-$OS"
+            local ghostty_source_dir="$DOTFILES_DIR/ghostty/.config/ghostty"
+            local ghostty_target_dir="$HOME/.config/ghostty"
+            mkdir -p "$ghostty_target_dir"
+
+            local ghostty_configs=("config")
+            if [[ "$OS" == "linux" ]]; then
+                ghostty_configs+=("config-linux")
+            elif [[ "$OS" == "macos" ]]; then
+                ghostty_configs+=("config-macos")
+            fi
+
+            for gc in "${ghostty_configs[@]}"; do
+                if [[ -f "$ghostty_source_dir/$gc" ]]; then
+                    ln -sf "$ghostty_source_dir/$gc" "$ghostty_target_dir/$gc"
+                fi
+            done
+
+            echo "Linked ghostty configs to $ghostty_target_dir"
         else
-            target="$HOME"
-            stow --dir="$DOTFILES_DIR" --target="$target" --restow "$package"
+            stow --dir="$DOTFILES_DIR" --target="$HOME" --restow "$package"
         fi
-        echo "Stowed $package to $target"
     done
 
     for package in "${home_packages[@]}"; do
