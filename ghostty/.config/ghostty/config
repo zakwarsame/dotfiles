@@ -2,7 +2,7 @@ theme = tokyonight
 
 # appearance
 font-family = Jetbrains Mono
-font-size = 13
+font-size = 14
 background-opacity = 0.8
 background-blur-radius = 10
 cursor-style = bar
@@ -21,6 +21,7 @@ gtk-wide-tabs = false
 confirm-close-surface = false
 
 macos-option-as-alt = true
+clipboard-trim-trailing-spaces = true
 
 # common keybinds
 keybind = ctrl+shift+]=move_tab:1

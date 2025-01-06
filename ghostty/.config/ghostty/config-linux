@@ -11,4 +11,7 @@ keybind = alt+v=paste_from_clipboard
 keybind = alt+c=copy_to_clipboard
 
 keybind = alt+n=new_window
+keybind = alt+period>f=toggle_split_zoom
+keybind = alt+period>g=open_config
 
+keybind = alt+period>u=scroll_page_up
