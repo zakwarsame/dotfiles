@@ -107,6 +107,7 @@ stow_configs() {
 
             for gc in "${ghostty_configs[@]}"; do
                 if [[ -f "$ghostty_source_dir/$gc" ]]; then
+                    # using symlinks instead of stow to simplify os-specific configs
                     ln -sf "$ghostty_source_dir/$gc" "$ghostty_target_dir/$gc"
                 fi
             done
