@@ -3,8 +3,8 @@ theme = tokyonight
 # appearance
 font-family = Jetbrains Mono
 font-size = 14
-background-opacity = 0.8
-background-blur-radius = 10
+background-opacity = 0.9
+background-blur-radius = 20
 cursor-style = bar
 cursor-style-blink = true
 

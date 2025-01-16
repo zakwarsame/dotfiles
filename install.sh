@@ -227,9 +227,30 @@ setup_editor_keybinds() {
     echo "Editor keybindings configured for $OS."
 }
 
+# added for spin reasons, remove if not needed
+install_ghostty_ubuntu() {
+    if [[ "$OS" == "linux" ]] && [[ -f "/etc/os-release" ]]; then
+        source /etc/os-release
+        if [[ "$ID" == "ubuntu" ]]; then
+            echo "Installing Ghostty for Ubuntu..."
+            GHOSTTY_DEB_URL=$(
+                curl -s https://api.github.com/repos/mkasberg/ghostty-ubuntu/releases/latest | \
+                grep -oP "https://github.com/mkasberg/ghostty-ubuntu/releases/download/[^\s/]+/ghostty_[^\s/_]+_amd64_${VERSION_ID}.deb"
+            )
+            GHOSTTY_DEB_FILE=$(basename "$GHOSTTY_DEB_URL")
+            curl -LO "$GHOSTTY_DEB_URL"
+            sudo dpkg -i "$GHOSTTY_DEB_FILE"
+            rm "$GHOSTTY_DEB_FILE"
+        fi
+    fi
+}
+
 main() {
     install_antidote
     install_stow
+
+    # Add Ghostty installation before stowing configs
+    install_ghostty_ubuntu
 
     #zoxide
     curl -sSfL https://raw.githubusercontent.com/ajeetdsouza/zoxide/main/install.sh | sh
