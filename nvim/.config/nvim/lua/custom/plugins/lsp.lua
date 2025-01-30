@@ -56,7 +56,7 @@ return {
 
       map('gd', function()
         if require('obsidian').util.cursor_on_markdown_link() then
-          return '<cmd>ObsidianFollowLink<CR>'
+          vim.cmd 'ObsidianFollowLink'
         else
           require('telescope.builtin').lsp_definitions()
         end

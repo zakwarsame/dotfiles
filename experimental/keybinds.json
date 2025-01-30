@@ -30,7 +30,7 @@
     "when": "searchViewletVisible"
   },
   {
-    "key": "ctrl+n",
+    "key": "cmd+shift+n",
     "command": "workbench.action.toggleSidebarVisibility"
   },
   {

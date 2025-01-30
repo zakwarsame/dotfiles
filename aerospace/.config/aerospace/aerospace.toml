@@ -131,7 +131,7 @@ alt-e = 'workspace E'
 # alt-q = 'workspace Q'
 alt-r = 'workspace R'
 # alt-s = 'workspace S'
-# alt-t = 'workspace T'
+alt-t = 'workspace T'
 # alt-u = 'workspace U'
 # alt-v = 'workspace V'
 alt-w = 'workspace W'
@@ -163,7 +163,7 @@ alt-shift-m = ['move-node-to-workspace M', 'workspace M']
 # alt-shift-q = 'move-node-to-workspace Q'
 alt-shift-r = ['move-node-to-workspace R', 'workspace R']
 # alt-shift-s = 'move-node-to-workspace S'
-# alt-shift-t = 'move-node-to-workspace T'
+alt-shift-t = ['move-node-to-workspace T', 'workspace T']
 # alt-shift-u = 'move-node-to-workspace U'
 # alt-shift-v = 'move-node-to-workspace V'
 alt-shift-w = ['move-node-to-workspace W', 'workspace W']
@@ -204,3 +204,10 @@ alt-shift-h = ['join-with left', 'mode main']
 alt-shift-j = ['join-with down', 'mode main']
 alt-shift-k = ['join-with up', 'mode main']
 alt-shift-l = ['join-with right', 'mode main']
+
+[[on-window-detected]]
+if.app-id="com.mitchellh.ghostty"
+run= [
+  "layout tiling",
+  "move-node-to-workspace T"
+]

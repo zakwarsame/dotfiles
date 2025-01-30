@@ -59,5 +59,11 @@ alias cd="z"
 # eza
 alias l="eza --color=always --icons=always --group-directories-first --long --git --all"
 
+# zellij
+alias zap="zellij a proxy"
+alias zaw="zellij a web"
+alias ze="zellij"
+
 # editor
 export EDITOR=nvim
+

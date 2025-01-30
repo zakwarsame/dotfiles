@@ -10,7 +10,6 @@ echo "Detected OS: $OS"
 DOTFILES_DIR="$HOME/dotfiles"
 BACKUP_DIR="$HOME/config_backup_$(date +%Y%m%d_%H%M%S)"
 
-# antidote
 install_antidote() {
     local antidote_dir="${ZDOTDIR:-$HOME}/.antidote"
     if [[ ! -d "$antidote_dir" ]]; then
@@ -19,7 +18,6 @@ install_antidote() {
     fi
 }
 
-# stow
 install_stow() {
     if ! command -v stow &>/dev/null; then
         echo "Installing GNU Stow..."

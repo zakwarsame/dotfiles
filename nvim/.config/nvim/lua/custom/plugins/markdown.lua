@@ -63,7 +63,7 @@ return {
         },
         mappings = {
           -- toggle check-boxes
-          ['<leader>ti'] = {
+          ['<leader>oi'] = {
             action = function()
               return require('obsidian').util.toggle_checkbox()
             end,
