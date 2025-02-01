@@ -1,3 +1,9 @@
 [user]
     name = 
     email =
+    signingkey =
+
+[include]
+	path = /Users/<name>/.config/dev/gitconfig
+	path = /Users/<name>/.config/dev/gitconfig
+
