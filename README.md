@@ -11,7 +11,7 @@ my current dotfiles setup. so much bs and iterations going on here and i'm too l
 - `kitty/`: kitty terminal config (barely used anymore)
 - `espanso/`: text expansion magic
 - `aerospace/`: window management for macos
-- `zellij/` for multiplexing (also barely use anymore because of wezterm)
+- `zellij/` for multiplexin
 
 ```
 dotfiles/
@@ -58,17 +58,17 @@ dotfiles/
 
 the install script will:
 
-- backup your existing configs (just in case)
-- use gnu stow to symlink everything nicely
+- backup your existing configs
+- use gnu stow to symlink everything
 - handle os-specific stuff (macos vs linux)
 
 ## cool features
 
 - uses antidote for zsh plugin management
 - configures git with some neat shortcuts
-- sets up a pretty sweet prompt with powerlevel10k
+- sets up a prompt with powerlevel10k
 
 ## os-specific stuff
 
 - macos: configures things like keyboard repeat rate and finder settings
-- linux: sets up keyd for advanced keyboard remapping
+- linux: sets up keyd for keyboard remapping on linux
