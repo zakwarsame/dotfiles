@@ -71,4 +71,5 @@ the install script will:
 ## os-specific stuff
 
 - macos: configures things like keyboard repeat rate and finder settings
-- linux: sets up keyd for keyboard remapping on linux
+- linux: sets up keyd for keyboard remapping on linux (`capslock` as esc when
+  tapped, ctrl when held. `capslock`+ `hjkl` as arrows)
