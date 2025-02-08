@@ -6,23 +6,41 @@ return {
   },
   {
     'HakonHarnes/img-clip.nvim',
-    ft = { 'markdown', 'md', 'markdown.mdx' },
-    dependencies = {
-      'nvim-lua/plenary.nvim',
-    },
+    event = 'VeryLazy',
     opts = {
-      -- default_dir_path = '/home/alchemy/Documents/obsidian-vault/attachments',
+      -- default_dir_path = '/home/alchemy/Documents/obsidian-vault/assets',
       -- dir_path = function()
-      --   return vim.fn.expand '%:p:h' .. '/attachments'
+      --   return vim.fn.expand '%:p:h' .. '/assets'
       -- end,
       -- file_name = function()
       --   return os.date '%Y%m%d-%H%M%S'
       -- end,
     },
     keys = {
+      -- suggested keymap
       { '<leader>p', '<cmd>PasteImage<cr>', desc = 'Paste image from system clipboard' },
     },
   },
+  -- if the above works on linux, delete the following
+  -- {
+  --   'HakonHarnes/img-clip.nvim',
+  --   ft = { 'markdown', 'md', 'markdown.mdx' },
+  --   dependencies = {
+  --     'nvim-lua/plenary.nvim',
+  --   },
+  --   opts = {
+  --     -- default_dir_path = '/home/alchemy/Documents/obsidian-vault/attachments',
+  --     -- dir_path = function()
+  --     --   return vim.fn.expand '%:p:h' .. '/attachments'
+  --     -- end,
+  --     -- file_name = function()
+  --     --   return os.date '%Y%m%d-%H%M%S'
+  --     -- end,
+  --   },
+  --   keys = {
+  --     { '<leader>p', '<cmd>PasteImage<cr>', desc = 'Paste image from system clipboard' },
+  --   },
+  -- },
   {
     '3rd/image.nvim',
     dependencies = { 'luarocks.nvim' },

@@ -72,7 +72,7 @@ return {
       vim.keymap.set({ 'n', 'v' }, '<leader>L', anthropic_help, { desc = 'llm anthropic_help' })
       vim.keymap.set({ 'n', 'v' }, '<leader>l', anthropic_replace, { desc = 'llm anthropic' })
       vim.keymap.set({ 'n', 'v' }, '<leader>P', openai_help, { desc = 'llm openai' })
-      vim.keymap.set({ 'n', 'v' }, '<leader>p', openai_replace, { desc = 'llm openai' })
+      -- vim.keymap.set({ 'n', 'v' }, '<leader>p', openai_replace, { desc = 'llm openai' })
 
       vim.keymap.set({ 'n', 'v' }, '<leader>;h', non_proxy_anthropic_help, { desc = 'llm anthropic help' })
       vim.keymap.set({ 'n', 'v' }, '<leader>;r', non_proxy_anthropic_replace, { desc = 'llm anthropic replace' })
