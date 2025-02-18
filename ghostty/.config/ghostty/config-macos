@@ -1,5 +1,7 @@
 window-decoration = true
 
+font-size = 20
+
 keybind = super+enter=new_split:right
 keybind = super+shift+enter=new_split:down
 keybind = super+t=new_tab
