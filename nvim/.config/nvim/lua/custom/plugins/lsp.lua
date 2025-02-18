@@ -58,7 +58,7 @@ return {
         if require('obsidian').util.cursor_on_markdown_link() then
           vim.cmd 'ObsidianFollowLink'
         else
-          require('telescope.builtin').lsp_definitions()
+          require('snacks').picker.lsp_definitions()
         end
       end, '[G]oto [D]efinition')
       map('gr', require('telescope.builtin').lsp_references, '[G]oto [R]eferences')
