@@ -37,6 +37,11 @@ require('snacks').setup {
         ignored = false,
         follow = true,
       },
+      explorer = {
+        hidden = true,
+        ignored = false,
+        follow = true,
+      },
     },
     matcher = {
       frecency = true,
@@ -68,6 +73,10 @@ keymap.set('n', '<leader>n', function()
 end, { desc = 'Notification History' })
 keymap.set('n', '<leader>e', function()
   Snacks.explorer()
+end, { desc = 'File Explorer' })
+
+keymap.set('n', '<leader>E', function()
+  Snacks.explorer.reveal()
 end, { desc = 'File Explorer' })
 
 -- find
