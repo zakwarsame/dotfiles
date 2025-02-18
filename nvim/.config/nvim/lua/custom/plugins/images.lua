@@ -8,13 +8,11 @@ return {
     'HakonHarnes/img-clip.nvim',
     event = 'VeryLazy',
     opts = {
-      -- default_dir_path = '/home/alchemy/Documents/obsidian-vault/assets',
-      -- dir_path = function()
-      --   return vim.fn.expand '%:p:h' .. '/assets'
-      -- end,
-      -- file_name = function()
-      --   return os.date '%Y%m%d-%H%M%S'
-      -- end,
+      relative_to_current_file = true,
+      use_absolute_path = false,
+      file_path = 'assets',
+      url_encode_path = false,
+      prompt_for_file_name = false,
     },
     keys = {
       -- suggested keymap
@@ -29,9 +27,9 @@ return {
   --     'nvim-lua/plenary.nvim',
   --   },
   --   opts = {
-  --     -- default_dir_path = '/home/alchemy/Documents/obsidian-vault/attachments',
+  --     -- default_dir_path = '/home/alchemy/Documents/obsidian-vault/assets',
   --     -- dir_path = function()
-  --     --   return vim.fn.expand '%:p:h' .. '/attachments'
+  --     --   return vim.fn.expand '%:p:h' .. '/assets'
   --     -- end,
   --     -- file_name = function()
   --     --   return os.date '%Y%m%d-%H%M%S'
