@@ -33,3 +33,5 @@ headers.txt
 # antidote
 antidote.zsh_plugins.zsh
 .cursorignore
+
+*.mdc
