@@ -26,13 +26,13 @@ require('avante').setup {
   hints = {
     enabled = false,
   },
-  -- provider = 'local_proxy',
-  provider = 'claude',
+  provider = 'local_proxy',
+  -- provider = 'claude',
   -- auto_suggestions_provider = 'local_proxy',
   auto_suggestions_provider = 'claude',
   vendors = {
     ['local_proxy'] = {
-      endpoint = 'http://127.0.0.1:8787/v3/v1/',
+      endpoint = 'http://127.0.0.1:8787/v1/',
       model = 'anthropic:claude-3-5-sonnet-20241022',
       api_key_name = 'ANTHROPIC_API_KEY',
       parse_curl_args = openai.parse_curl_args,

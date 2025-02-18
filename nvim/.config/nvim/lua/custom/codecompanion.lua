@@ -3,7 +3,7 @@ require('codecompanion').setup {
 
     anthropic = function()
       return require('codecompanion.adapters').extend('openai', {
-        url = 'http://127.0.0.1:8787/v3/v1/chat/completions',
+        url = 'http://127.0.0.1:8787/v1/chat/completions',
         env = {
           api_key = function()
             return os.getenv 'ANTHROPIC_API_KEY'
