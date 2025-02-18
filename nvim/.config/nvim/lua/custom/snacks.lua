@@ -38,8 +38,17 @@ require('snacks').setup {
         follow = true,
       },
     },
+    matcher = {
+      frecency = true,
+      history_bonus = true,
+      cwd_bonus = true,
+    },
   },
 }
+
+keymap.set('n', '<leader>lg', function()
+  Snacks.lazygit.open()
+end, { desc = 'Open lazygit' })
 
 -- Top Pickers & Explorer
 keymap.set('n', '<leader><space>', function()
@@ -68,10 +77,10 @@ end, { desc = 'Buffers' })
 keymap.set('n', '<leader>sd', function()
   Snacks.picker.files { cwd = vim.fn.stdpath 'config' }
 end, { desc = 'Find Config File' })
-keymap.set('n', '<leader>ff', function()
+keymap.set('n', '<leader>sf', function()
   Snacks.picker.files()
 end, { desc = 'Find Files' })
-keymap.set('n', '<leader>sf', function()
+keymap.set('n', '<leader>sF', function()
   Snacks.picker.git_files()
 end, { desc = 'Find Git Files' })
 keymap.set('n', '<leader>fp', function()
@@ -97,7 +106,7 @@ end, { desc = 'Git Status' })
 keymap.set('n', '<leader>gS', function()
   Snacks.picker.git_stash()
 end, { desc = 'Git Stash' })
-keymap.set('n', '<leader>gd', function()
+keymap.set('n', '<leader>gD', function()
   Snacks.picker.git_diff()
 end, { desc = 'Git Diff (Hunks)' })
 keymap.set('n', '<leader>gf', function()
@@ -128,9 +137,6 @@ end, { desc = 'Search History' })
 keymap.set('n', '<leader>sa', function()
   Snacks.picker.autocmds()
 end, { desc = 'Autocmds' })
-keymap.set('n', '<leader>sb', function()
-  Snacks.picker.lines()
-end, { desc = 'Buffer Lines' })
 keymap.set('n', '<leader>sc', function()
   Snacks.picker.command_history()
 end, { desc = 'Command History' })
@@ -150,7 +156,7 @@ keymap.set('n', '<leader>si', function()
   Snacks.picker.icons()
 end, { desc = 'Icons' })
 keymap.set('n', '<leader>sj', function()
-  Snacks.picker.grep({ ft = 'javascript,typescript,jsx,tsx' })
+  Snacks.picker.grep { ft = 'javascript,typescript,jsx,tsx' }
 end, { desc = 'Grep [J]S/TS Files' })
 keymap.set('n', '<leader>sk', function()
   Snacks.picker.keymaps()
@@ -170,7 +176,7 @@ end, { desc = 'Search for Plugin Spec' })
 keymap.set('n', '<leader>sq', function()
   Snacks.picker.qflist()
 end, { desc = 'Quickfix List' })
-keymap.set('n', '<leader>sR', function()
+keymap.set('n', '<leader>sr', function()
   Snacks.picker.resume()
 end, { desc = 'Resume' })
 keymap.set('n', '<leader>su', function()
@@ -208,12 +214,9 @@ end, { desc = 'LSP Workspace Symbols' })
 --   Snacks.picker.grep({ glob = '*.test.*' })
 -- end, { desc = 'Grep [T]est Files' })
 
-
 keymap.set('n', '<leader>sJ', function()
   Snacks.picker.jumps()
 end, { desc = '[S]earch [J]umps' })
-
-
 
 keymap.set('n', '<leader>sd', function()
   local home = os.getenv 'HOME'
