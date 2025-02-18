@@ -211,3 +211,10 @@ run= [
   "layout floating",
   "move-node-to-workspace T"
 ]
+
+[[on-window-detected]]
+if.app-name-regex-substring = 'Cursor'
+run= [
+  "layout tiling",
+  "move-node-to-workspace 2"
+]
