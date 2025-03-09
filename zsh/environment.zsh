@@ -9,3 +9,9 @@ export HISTFILE=~/.zsh_history
 export HISTSIZE=10000
 export SAVEHIST=1000
 touch $HISTFILE
+
+
+# nihongo in hyprland
+export GTK_IM_MODULE=fcitx
+export QT_IM_MODULE=fcitx
+export XMODIFIERS=@im=fcitx
