@@ -21,7 +21,7 @@ local module = {
 		}
 		-- appearance
 		config.color_scheme = scheme_for_appearance(get_appearance())
-		config.font_size = 14.0
+		config.font_size = 18.0
 		config.font = wezterm.font("JetBrains Mono", { weight = "Regular", italic = false })
 
 		-- background image
@@ -146,26 +146,27 @@ local module = {
 				action = act.ActivatePaneDirection("Next"),
 			},
 
-			{
-				key = "h",
-				mods = mods,
-				action = wezterm.action.AdjustPaneSize({ "Left", 2 }),
-			},
-			{
-				key = "l",
-				mods = mods,
-				action = wezterm.action.AdjustPaneSize({ "Right", 2 }),
-			},
-			{
-				key = "k",
-				mods = mods,
-				action = wezterm.action.AdjustPaneSize({ "Down", 2 }),
-			},
-			{
-				key = "j",
-				mods = mods,
-				action = wezterm.action.AdjustPaneSize({ "Up", 2 }),
-			},
+			-- Commenting out conflicting movement bindings
+			-- {
+			-- 	key = "h",
+			-- 	mods = mods,
+			-- 	action = act.ActivatePaneDirection("Left"),
+			-- },
+			-- {
+			-- 	key = "j",
+			-- 	mods = mods,
+			-- 	action = act.ActivatePaneDirection("Down"),
+			-- },
+			-- {
+			-- 	key = "k",
+			-- 	mods = mods,
+			-- 	action = act.ActivatePaneDirection("Up"),
+			-- },
+			-- {
+			-- 	key = "l",
+			-- 	mods = mods,
+			-- 	action = act.ActivatePaneDirection("Right"),
+			-- },
 
 			{
 				key = "c",
