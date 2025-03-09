@@ -74,6 +74,17 @@ function module.apply_to_config(config)
 		split_nav("resize", "RightArrow"),
 		split_nav("resize", "UpArrow"),
 		split_nav("resize", "DownArrow"),
+		-- tab navigation with Alt+Shift+[ and Alt+Shift+]
+		{
+			key = "{",
+			mods = "ALT|SHIFT",
+			action = act.ActivateTabRelative(-1),
+		},
+		{
+			key = "}",
+			mods = "ALT|SHIFT",
+			action = act.ActivateTabRelative(1),
+		},
 	}
 
 	if not config.keys then
