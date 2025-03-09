@@ -194,15 +194,21 @@ return {
     'mrjones2014/smart-splits.nvim',
     lazy = false,
     keys = {
+      -- Movement between splits
       { '<Left>', function() require("smart-splits").move_cursor_left() end, mode = {"i", "n", "v"}, desc = "Move to left split" },
       { '<Right>', function() require("smart-splits").move_cursor_right() end, mode = {"i", "n", "v"}, desc = "Move to right split" },
       { '<C-;>', function() require("smart-splits").move_cursor_up() end, mode = {"i", "n", "v"}, desc = "Move to upper split" },
       { "<C-'>", function() require("smart-splits").move_cursor_down() end, mode = {"i", "n", "v"}, desc = "Move to lower split" },
-      -- Resizing splits
-      { '<S-Left>', function() require("smart-splits").resize_left() end, mode = {"n"}, desc = "Resize split left" },
-      { '<S-Right>', function() require("smart-splits").resize_right() end, mode = {"n"}, desc = "Resize split right" },
-      { '<S-Up>', function() require("smart-splits").resize_up() end, mode = {"n"}, desc = "Resize split up" },
-      { '<S-Down>', function() require("smart-splits").resize_down() end, mode = {"n"}, desc = "Resize split down" },
+      -- Resizing splits (special chars from WezTerm)
+      { '<Char-0xB1>', function() require("smart-splits").resize_left() end, mode = {"n"}, desc = "Resize split left" },
+      { '<Char-0xB2>', function() require("smart-splits").resize_right() end, mode = {"n"}, desc = "Resize split right" },
+      { '<Char-0xB3>', function() require("smart-splits").resize_up() end, mode = {"n"}, desc = "Resize split up" },
+      { '<Char-0xB4>', function() require("smart-splits").resize_down() end, mode = {"n"}, desc = "Resize split down" },
+      -- Keep ALT bindings for non-WezTerm environments
+      { '<A-Left>', function() require("smart-splits").resize_left() end, mode = {"n"}, desc = "Resize split left" },
+      { '<A-Right>', function() require("smart-splits").resize_right() end, mode = {"n"}, desc = "Resize split right" },
+      { '<A-Up>', function() require("smart-splits").resize_up() end, mode = {"n"}, desc = "Resize split up" },
+      { '<A-Down>', function() require("smart-splits").resize_down() end, mode = {"n"}, desc = "Resize split down" },
     },
   },
 }

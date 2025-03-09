@@ -7,8 +7,6 @@ local direction_keys = {
 	RightArrow = "Right",
 	UpArrow = "Up",
 	DownArrow = "Down",
-	[";"] = "Up",
-	["'"] = "Down",
 }
 
 local function is_vim(pane)
@@ -16,11 +14,19 @@ local function is_vim(pane)
 	return pane:get_user_vars().IS_NVIM == "true"
 end
 
+-- Special chars we'll send to Neovim for resize operations
+local resize_chars = {
+	LeftArrow = utf8.char(0xB1),  -- resize left
+	RightArrow = utf8.char(0xB2), -- resize right
+	UpArrow = utf8.char(0xB3),    -- resize up
+	DownArrow = utf8.char(0xB4),  -- resize down
+}
+
 local function get_platform_mods()
 	if wezterm.target_triple == "aarch64-apple-darwin" or wezterm.target_triple == "x86_64-apple-darwin" then
-		return "CMD", "ALT"
+		return "CMD"
 	else
-		return "ALT", "ALT|SHIFT"
+		return "ALT"
 	end
 end
 
@@ -35,20 +41,21 @@ local function get_mods(resize_or_move, key)
 end
 
 local function split_nav(resize_or_move, key)
+	local mod = resize_or_move == "resize" and get_platform_mods() or ""
 	return {
 		key = key,
-		mods = get_mods(resize_or_move, key),
+		mods = mod,
 		action = wezterm.action_callback(function(win, pane)
 			if is_vim(pane) then
-				-- pass the keys through to vim/nvim
-				if key == ";" or key == "'" then
+				if resize_or_move == "resize" then
+					-- Send special char for Neovim to interpret
 					win:perform_action({
-						SendKey = { key = key, mods = "CTRL" },
+						SendKey = { key = resize_chars[key], mods = "" },
 					}, pane)
 				else
-					-- For arrow keys, send with SHIFT if resizing
+					-- For movement, just pass the arrow key
 					win:perform_action({
-						SendKey = { key = key, mods = resize_or_move == "resize" and "SHIFT" or "" },
+						SendKey = { key = key, mods = "" },
 					}, pane)
 				end
 			else
@@ -67,8 +74,8 @@ function module.apply_to_config(config)
 		-- move between split panes
 		split_nav("move", "LeftArrow"),
 		split_nav("move", "RightArrow"),
-		split_nav("move", ";"),
-		split_nav("move", "'"),
+		split_nav("move", "UpArrow"),
+		split_nav("move", "DownArrow"),
 		-- resize panes
 		split_nav("resize", "LeftArrow"),
 		split_nav("resize", "RightArrow"),
