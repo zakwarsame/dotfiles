@@ -5,6 +5,8 @@ local module = {}
 local direction_keys = {
 	LeftArrow = "Left",
 	RightArrow = "Right",
+	UpArrow = "Up",
+	DownArrow = "Down",
 	[";"] = "Up",
 	["'"] = "Down",
 }
@@ -24,7 +26,7 @@ end
 
 local function get_mods(resize_or_move, key)
 	if resize_or_move == "resize" then
-		return "ALT"
+		return "SHIFT"
 	elseif key == ";" or key == "'" then
 		return "CTRL"
 	else
@@ -38,14 +40,15 @@ local function split_nav(resize_or_move, key)
 		mods = get_mods(resize_or_move, key),
 		action = wezterm.action_callback(function(win, pane)
 			if is_vim(pane) then
+				-- pass the keys through to vim/nvim
 				if key == ";" or key == "'" then
 					win:perform_action({
 						SendKey = { key = key, mods = "CTRL" },
 					}, pane)
 				else
-					-- For arrow keys, just send them as is since they're already mapped in nvim
+					-- For arrow keys, send with SHIFT if resizing
 					win:perform_action({
-						SendKey = { key = key },
+						SendKey = { key = key, mods = resize_or_move == "resize" and "SHIFT" or "" },
 					}, pane)
 				end
 			else
@@ -67,10 +70,10 @@ function module.apply_to_config(config)
 		split_nav("move", ";"),
 		split_nav("move", "'"),
 		-- resize panes
-		split_nav("resize", "h"),
-		split_nav("resize", "l"),
-		split_nav("resize", ";"),
-		split_nav("resize", "'"),
+		split_nav("resize", "LeftArrow"),
+		split_nav("resize", "RightArrow"),
+		split_nav("resize", "UpArrow"),
+		split_nav("resize", "DownArrow"),
 	}
 
 	if not config.keys then

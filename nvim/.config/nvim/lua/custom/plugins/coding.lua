@@ -199,10 +199,10 @@ return {
       { '<C-;>', function() require("smart-splits").move_cursor_up() end, mode = {"i", "n", "v"}, desc = "Move to upper split" },
       { "<C-'>", function() require("smart-splits").move_cursor_down() end, mode = {"i", "n", "v"}, desc = "Move to lower split" },
       -- Resizing splits
-      { '<M-h>', function() require("smart-splits").resize_left() end, mode = {"n"}, desc = "Resize split left" },
-      { '<M-l>', function() require("smart-splits").resize_right() end, mode = {"n"}, desc = "Resize split right" },
-      { '<M-;>', function() require("smart-splits").resize_up() end, mode = {"n"}, desc = "Resize split up" },
-      { "<M-'>", function() require("smart-splits").resize_down() end, mode = {"n"}, desc = "Resize split down" },
+      { '<S-Left>', function() require("smart-splits").resize_left() end, mode = {"n"}, desc = "Resize split left" },
+      { '<S-Right>', function() require("smart-splits").resize_right() end, mode = {"n"}, desc = "Resize split right" },
+      { '<S-Up>', function() require("smart-splits").resize_up() end, mode = {"n"}, desc = "Resize split up" },
+      { '<S-Down>', function() require("smart-splits").resize_down() end, mode = {"n"}, desc = "Resize split down" },
     },
   },
 }
