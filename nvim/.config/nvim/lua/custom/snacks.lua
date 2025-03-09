@@ -49,6 +49,16 @@ require('snacks').setup {
       cwd_bonus = true,
     },
   },
+  image = {
+    enabled = true,
+    doc = {
+      inline = vim.g.neovim_mode == 'skitty' and true or false,
+      float = true,
+      max_width = vim.g.neovim_mode == 'skitty' and 20 or 60,
+      max_height = vim.g.neovim_mode == 'skitty' and 10 or 30,
+      -- max_height = 30,
+    },
+  },
 }
 
 keymap.set('n', '<leader>lg', function()
