@@ -195,10 +195,10 @@ return {
     lazy = false,
     keys = {
       -- Movement between splits
-      { '<Left>', function() require("smart-splits").move_cursor_left() end, mode = {"i", "n", "v"}, desc = "Move to left split" },
-      { '<Right>', function() require("smart-splits").move_cursor_right() end, mode = {"i", "n", "v"}, desc = "Move to right split" },
-      { '<C-;>', function() require("smart-splits").move_cursor_up() end, mode = {"i", "n", "v"}, desc = "Move to upper split" },
-      { "<C-'>", function() require("smart-splits").move_cursor_down() end, mode = {"i", "n", "v"}, desc = "Move to lower split" },
+      { '<Left>', function() require("smart-splits").move_cursor_left() end, mode = {"n"}, desc = "Move to left split" },
+      { '<Right>', function() require("smart-splits").move_cursor_right() end, mode = {"n"}, desc = "Move to right split" },
+      { '<Up>', function() require("smart-splits").move_cursor_up() end, mode = {"n"}, desc = "Move to upper split" },
+      { '<Down>', function() require("smart-splits").move_cursor_down() end, mode = {"n"}, desc = "Move to lower split" },
       -- Resizing splits (for macos cmd key)
       { '<Char-0xB1>', function() require("smart-splits").resize_left() end, mode = {"n"}, desc = "Resize split left" },
       { '<Char-0xB2>', function() require("smart-splits").resize_right() end, mode = {"n"}, desc = "Resize split right" },

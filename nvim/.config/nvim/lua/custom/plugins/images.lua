@@ -3,11 +3,13 @@ return {
     'HakonHarnes/img-clip.nvim',
     event = 'VeryLazy',
     opts = {
-      relative_to_current_file = true,
-      use_absolute_path = false,
-      file_path = 'assets',
-      url_encode_path = false,
-      prompt_for_file_name = false,
+      default = {
+        dir_path = "assets",
+        relative_to_current_file = true,
+        use_absolute_path = false,
+        file_name = "%Y-%m-%d-%H-%M-%S",
+        template = "![$CURSOR]($FILE_PATH)",
+      },
     },
     keys = {
       { '<leader>p', '<cmd>PasteImage<cr>', desc = 'Paste image from system clipboard' },
