@@ -42,8 +42,8 @@ opt.softtabstop = 2
 opt.tabstop = 2
 
 -- Text width and wrapping
-opt.textwidth = 80
-opt.colorcolumn = '80' -- Shows a vertical line at column 80
-opt.wrap = true
-opt.linebreak = true -- Wrap at word boundaries
-opt.breakindent = true -- Preserve indentation in wrapped text
+-- opt.textwidth = 80
+-- opt.colorcolumn = '80' -- Shows a vertical line at column 80
+-- opt.wrap = true
+-- opt.linebreak = true -- Wrap at word boundaries
+-- opt.breakindent = true -- Preserve indentation in wrapped text
