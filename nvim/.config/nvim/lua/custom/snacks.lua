@@ -56,10 +56,10 @@ keymap.set('n', '<leader>lg', function()
 end, { desc = 'Open lazygit' })
 
 -- Top Pickers & Explorer
-keymap.set('n', '<leader><space>', function()
+keymap.set('n', '<leader>,', function()
   Snacks.picker.smart()
 end, { desc = 'Smart Find Files' })
-keymap.set('n', '<leader>,', function()
+keymap.set('n', '<leader><space>', function()
   Snacks.picker.buffers()
 end, { desc = 'Buffers' })
 keymap.set('n', '<leader>/', function()
@@ -243,11 +243,11 @@ keymap.set('n', '<leader>sO', function()
 end, { desc = '[S]earch [O]bsidian Content' })
 
 keymap.set('n', '<leader>st', function()
-  vim.cmd('ObsidianTags')
+  vim.cmd 'ObsidianTags'
 end, { desc = '[S]earch Obsidian [T]ags' })
 
 keymap.set('n', '<leader>od', function()
-  vim.cmd('ObsidianDailies')
+  vim.cmd 'ObsidianDailies'
 end, { desc = '[O]bsidian [D]ailies' })
 
 keymap.set('n', '<leader>sd', function()
