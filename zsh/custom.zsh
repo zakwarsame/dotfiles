@@ -30,7 +30,7 @@ alias gcf='git commit --fixup "$(git log --oneline | fzf --no-sort | awk "{print
 alias refresh='dev reup && dev restart --all'
 #
 # shopify
-alias dcw='dev cd web//admin-web' 
+alias dcw='dev cd admin-web' 
 alias dcs='dev cd shopify'
 alias dcl='dev clone web//admin-web'
 
@@ -62,6 +62,7 @@ alias l="eza --color=always --icons=always --group-directories-first --long --gi
 # zellij
 alias zap="zellij a proxy"
 alias zaw="zellij a web"
+alias zas="zellij a shop"
 alias ze="zellij"
 
 # editor
