@@ -29,6 +29,6 @@ wezterm.on("user-var-changed", function(window, pane, name, value)
 	end
 end)
 
--- movement.apply_to_config(config)
+movement.apply_to_config(config)
 
 return config
