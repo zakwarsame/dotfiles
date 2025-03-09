@@ -227,6 +227,29 @@ keymap.set('n', '<leader>sJ', function()
   Snacks.picker.jumps()
 end, { desc = '[S]earch [J]umps' })
 
+-- Obsidian shortcuts
+keymap.set('n', '<leader>so', function()
+  Snacks.picker.files {
+    cwd = os.getenv 'HOME' .. '/Documents/obsidian-vault',
+    glob = '**/*.md',
+  }
+end, { desc = '[S]earch [O]bsidian Files' })
+
+keymap.set('n', '<leader>sO', function()
+  Snacks.picker.grep {
+    cwd = os.getenv 'HOME' .. '/Documents/obsidian-vault',
+    glob = '**/*.md',
+  }
+end, { desc = '[S]earch [O]bsidian Content' })
+
+keymap.set('n', '<leader>st', function()
+  vim.cmd('ObsidianTags')
+end, { desc = '[S]earch Obsidian [T]ags' })
+
+keymap.set('n', '<leader>od', function()
+  vim.cmd('ObsidianDailies')
+end, { desc = '[O]bsidian [D]ailies' })
+
 keymap.set('n', '<leader>sd', function()
   local home = os.getenv 'HOME'
   local dotfiles_path = success and shopify_config.dotfiles_path or (home .. '/dotfiles')
