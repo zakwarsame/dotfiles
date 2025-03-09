@@ -5,7 +5,7 @@ set('n', '<Esc>', '<cmd>nohlsearch<CR>')
 
 set('n', '[d', vim.diagnostic.goto_prev, { desc = 'Go to previous [D]iagnostic message' })
 set('n', ']d', vim.diagnostic.goto_next, { desc = 'Go to next [D]iagnostic message' })
-set('n', '<leader>e', vim.diagnostic.open_float, { desc = 'Show diagnostic [E]rror messages' })
+-- set('n', '<leader>e', vim.diagnostic.open_float, { desc = 'Show diagnostic [E]rror messages' })
 set('n', '<leader>q', vim.diagnostic.setloclist, { desc = 'Open diagnostic [Q]uickfix list' })
 set('n', '<leader>di', function()
   if vim.diagnostic.is_enabled() then
@@ -14,11 +14,14 @@ set('n', '<leader>di', function()
     vim.diagnostic.enable(true)
   end
 end, { desc = 'Toggle [D]iagnostics for current buffer' })
-set('n', '<Left>', '<C-w><C-h>', { desc = 'Move focus to the left window' })
-set('n', '<Right>', '<C-w><C-l>', { desc = 'Move focus to the right window' })
-set('n', '<Down>', '<C-w><C-j>', { desc = 'Move focus to the lower window' })
-set('n', '<Up>', '<C-w><C-k>', { desc = 'Move focus to the upper window' })
-set('n', '<C-w>', '<C-w><C-w>', { desc = 'Switch windows' })
+
+-- Commenting out old window movement in favor of smart-splits
+-- set('n', '<Left>', '<C-w><C-h>', { desc = 'Move focus to the left window' })
+-- set('n', '<Right>', '<C-w><C-l>', { desc = 'Move focus to the right window' })
+-- set('n', '<Down>', '<C-w><C-j>', { desc = 'Move focus to the lower window' })
+-- set('n', '<Up>', '<C-w><C-k>', { desc = 'Move focus to the upper window' })
+-- set('n', '<C-w>', '<C-w><C-w>', { desc = 'Switch windows' })
+
 set('n', '<leader>vs', '<C-w>v', { desc = 'Split window vertically' }) -- split window vertically
 set('n', '<leader>hs', '<C-w>s', { desc = 'Split window horizontally' }) -- split window horizontally
 set('n', '<leader>es', '<C-w>=', { desc = 'Make splits equal size' }) -- make split windows equal width & height
