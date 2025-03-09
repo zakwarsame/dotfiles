@@ -30,7 +30,7 @@ alias gcf='git commit --fixup "$(git log --oneline | fzf --no-sort | awk "{print
 alias refresh='dev reup && dev restart --all'
 #
 # shopify
-alias dcw='dev cd admin-web' 
+alias dcw='dev cd admin-web'
 alias dcs='dev cd shopify'
 alias dcl='dev clone web//admin-web'
 
@@ -67,4 +67,23 @@ alias ze="zellij"
 
 # editor
 export EDITOR=nvim
+
+# Configure completion to use tab
+bindkey '^I' autosuggest-accept  # Use tab for accepting suggestions
+ZSH_AUTOSUGGEST_STRATEGY=(history completion)
+ZSH_AUTOSUGGEST_USE_ASYNC=1
+
+# Key bindings
+# Up/down arrow for history search
+bindkey '\eOA' history-beginning-search-backward
+bindkey '\e[A' history-beginning-search-backward
+bindkey '\eOB' history-beginning-search-forward
+bindkey '\e[B' history-beginning-search-forward
+
+# Tab for autosuggestions
+bindkey '^I' autosuggest-accept
+
+# Autosuggestion settings
+ZSH_AUTOSUGGEST_STRATEGY=(history completion)
+ZSH_AUTOSUGGEST_USE_ASYNC=1
 
