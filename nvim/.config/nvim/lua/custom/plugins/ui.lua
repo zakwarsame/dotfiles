@@ -14,6 +14,16 @@ return {
     init = function()
       vim.cmd.colorscheme 'tokyonight-night'
       vim.cmd.hi 'Comment gui=none'
+
+      vim.keymap.set('n', '<leader>td', function()
+        if vim.o.background == 'dark' then
+          vim.o.background = 'light'
+          vim.cmd.colorscheme 'tokyonight-day'
+        else
+          vim.o.background = 'dark'
+          vim.cmd.colorscheme 'tokyonight-night'
+        end
+      end, { desc = 'Toggle between day/night themes' })
     end,
 
     config = function()
@@ -25,8 +35,13 @@ return {
           floats = transparent and 'transparent' or 'dark',
         },
         on_colors = function(colors)
-          colors.bg_highlight = '#143652'
-          colors.bg_visual = '#275378'
+          if vim.o.background == 'dark' then
+            colors.bg_highlight = '#143652'  -- Dark theme highlight
+            colors.bg_visual = '#275378'     -- Dark theme visual selection
+          else
+            colors.bg_highlight = '#b3d1f5'  -- Light theme highlight (darker)
+            colors.bg_visual = '#b3d1f5'     -- Light theme visual selection
+          end
         end,
       }
     end,

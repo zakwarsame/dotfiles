@@ -4,7 +4,7 @@ local ssh = require("utils/ssh")
 local multiplexing = require("utils/multiplexing")
 local movement = require("utils/movement")
 
-local config = {}
+local config = wezterm.config_builder()
 
 ssh.apply_to_config(config)
 local helper_keys = helpers.apply_to_config(config)

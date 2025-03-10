@@ -10,8 +10,33 @@ local function scheme_for_appearance(appearance)
 	if appearance:find("Dark") then
 		return "tokyonight"
 	else
-		return "Catppuccin Mocha"
+		return "tokyonight-day"
 	end
+end
+
+local function get_theme_config(appearance)
+	local scheme = scheme_for_appearance(appearance)
+	local overlay_color = appearance:find("Dark")
+		and "rgba(28, 33, 39, 0.81)" -- Dark overlay
+		or "rgba(255, 255, 255, 0.91)" -- Light overlay
+
+	return {
+		color_scheme = scheme,
+		background = {
+			{
+				source = {
+					File = wezterm.home_dir .. "/dotfiles/wezterm/wallpapers/landscape.png",
+				},
+			},
+			{
+				source = {
+					Color = overlay_color,
+				},
+				height = "100%",
+				width = "100%",
+			},
+		}
+	}
 end
 
 local module = {
@@ -20,25 +45,13 @@ local module = {
 			PATH = "/opt/homebrew/bin:" .. os.getenv("PATH"),
 		}
 		-- appearance
-		config.color_scheme = scheme_for_appearance(get_appearance())
+		local appearance = get_appearance()
+		local theme_config = get_theme_config(appearance)
+		config.color_scheme = theme_config.color_scheme
+		config.background = theme_config.background
+
 		config.font_size = 18.0
 		config.font = wezterm.font("JetBrains Mono", { weight = "Regular", italic = false })
-
-		-- background image
-		config.background = {
-			{
-				source = {
-					File = wezterm.home_dir .. "/dotfiles/wezterm/wallpapers/landscape.png",
-				},
-			},
-			{
-				source = {
-					Color = "rgba(28, 33, 39, 0.81)",
-				},
-				height = "100%",
-				width = "100%",
-			},
-		}
 
 		config.window_close_confirmation = "AlwaysPrompt"
 		config.window_decorations = "RESIZE"
@@ -52,6 +65,17 @@ local module = {
 		config.use_fancy_tab_bar = false
 		config.tab_and_split_indices_are_zero_based = true
 		config.tab_max_width = 32
+
+		-- Listen for theme changes
+		wezterm.on("window-config-reloaded", function(window, pane)
+			local overrides = window:get_config_overrides() or {}
+			local new_appearance = window:get_appearance()
+			local new_theme_config = get_theme_config(new_appearance)
+
+			overrides.color_scheme = new_theme_config.color_scheme
+			overrides.background = new_theme_config.background
+			window:set_config_overrides(overrides)
+		end)
 
 		-- keybindings
 		local act = wezterm.action
