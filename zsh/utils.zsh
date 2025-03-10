@@ -197,7 +197,7 @@ v() {
 # obsidian nvim file creating
 ob() {
     title="$*"
-    vault_dir=~/Documents/obsidian-work
+    vault_dir=~/Documents/obsidian-vault
 
     # Validate input and vault directory
     if [ -z "$title" ]; then

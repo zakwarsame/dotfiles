@@ -93,6 +93,15 @@ function module.apply_to_config(config)
 			action = act.ActivateTabRelative(1),
 		},
 	}
+	
+	-- Add Alt+1,2,3... for direct tab selection
+	for i = 1, 9 do
+		table.insert(keys, {
+			key = tostring(i),
+			mods = "ALT",
+			action = act.ActivateTab(i - 1),
+		})
+	end
 
 	if not config.keys then
 		config.keys = {}
