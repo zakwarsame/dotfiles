@@ -121,6 +121,18 @@ function M.write_string_at_cursor(str)
   end)
 end
 
+function M.get_lines_before_current_line()
+  local current_buffer = vim.api.nvim_get_current_buf()
+  local current_window = vim.api.nvim_get_current_win()
+  local cursor_position = vim.api.nvim_win_get_cursor(current_window)
+  local row = cursor_position[1]
+
+  -- Get all lines before the current line (row - 1 because Neovim API is 0-indexed for lines)
+  local lines = vim.api.nvim_buf_get_lines(current_buffer, 0, row - 1, true)
+
+  return table.concat(lines, '\n')
+end
+
 local function get_prompt(opts)
   local replace = opts.replace
   local help_mode = opts.help_mode
@@ -137,7 +149,8 @@ local function get_prompt(opts)
       vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes('<Esc>', false, true, true), 'nx', false)
     end
   else
-    prompt = M.get_lines_until_cursor()
+    -- Use everything before current line instead of until cursor
+    prompt = M.get_lines_before_current_line()
   end
 
   return prompt
@@ -168,6 +181,14 @@ function M.invoke_llm_and_stream_into_editor(opts, make_curl_args_fn, handle_dat
   if opts.help_mode then
     vim.api.nvim_buf_set_lines(0, -1, -1, false, { '' }) -- Add a new line at the end of the buffer
     vim.api.nvim_win_set_cursor(0, { vim.api.nvim_buf_line_count(0), 0 }) -- Move cursor to the end of the buffer
+  else
+    -- Insert a new line after cursor position and move cursor to it
+    local current_window = vim.api.nvim_get_current_win()
+    local cursor_position = vim.api.nvim_win_get_cursor(current_window)
+    local row = cursor_position[1]
+    
+    vim.api.nvim_buf_set_lines(0, row, row, false, { '' })
+    vim.api.nvim_win_set_cursor(0, { row + 1, 0 })
   end
 
   local function parse_and_call(line)
@@ -195,6 +216,16 @@ function M.invoke_llm_and_stream_into_editor(opts, make_curl_args_fn, handle_dat
     end,
     on_stderr = function(_, _) end,
     on_exit = function()
+      -- Move cursor to the next line after generation is complete
+      vim.schedule(function()
+        local current_window = vim.api.nvim_get_current_win()
+        local cursor_position = vim.api.nvim_win_get_cursor(current_window)
+        local row = cursor_position[1]
+        
+        -- Insert a new line after current position and move cursor to it
+        vim.api.nvim_buf_set_lines(0, row, row, false, { '' })
+        vim.api.nvim_win_set_cursor(0, { row + 1, 0 })
+      end)
       active_job = nil
     end,
   }
