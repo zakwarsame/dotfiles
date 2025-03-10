@@ -118,3 +118,13 @@ nvr() {
   esac
 }
 
+# Use default template with llm chat
+function llm() {
+  if [[ "$1" == "chat" ]]; then
+    shift
+    command llm chat -t default "$@"
+  else
+    command llm "$@"
+  fi
+}
+
