@@ -85,3 +85,35 @@ bindkey '^e' autosuggest-accept
 ZSH_AUTOSUGGEST_STRATEGY=(history completion)
 ZSH_AUTOSUGGEST_USE_ASYNC=1
 
+# Helper functions for Neovim remote control
+nvr() {
+  local socket="/tmp/nvim"
+  local cmd="$1"
+  shift
+
+  case "$cmd" in
+    "expr")
+      nvim --remote-expr "$1" --server "$socket"
+      ;;
+    "send")
+      nvim --remote-send "$1" --server "$socket"
+      ;;
+    "current-file")
+      nvim --remote-expr 'expand("%:p")' --server "$socket"
+      ;;
+    "visual-text")
+      # First yank the visually selected text, then retrieve it from register 0
+      nvim --remote-send 'y' --server "$socket" > /dev/null
+      nvim --remote-expr 'getreg("0")' --server "$socket"
+      ;;
+    "mode")
+      nvim --remote-expr 'mode()' --server "$socket"
+      ;;
+    *)
+      echo "Unknown command: $cmd"
+      echo "Available commands: expr, send, current-file, visual-text, mode"
+      return 1
+      ;;
+  esac
+}
+
