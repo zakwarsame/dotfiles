@@ -29,6 +29,14 @@ local resize_chars = {
 	DownArrow = utf8.char(0xB4), -- resize down
 }
 
+-- Special chars we'll send to Neovim for movement operations
+local movement_chars = {
+	h = utf8.char(0xC1), -- move left
+	l = utf8.char(0xC2), -- move right
+	k = utf8.char(0xC3), -- move up
+	j = utf8.char(0xC4), -- move down
+}
+
 local function get_platform_mods()
 	if wezterm.target_triple == "aarch64-apple-darwin" or wezterm.target_triple == "x86_64-apple-darwin" then
 		return "CMD"
@@ -62,9 +70,9 @@ local function split_nav(resize_or_move, key)
 			mods = mod,
 			action = wezterm.action_callback(function(win, pane)
 				if is_vim(pane) then
-					-- For movement, just pass the key
+					-- For movement in Neovim, send special character
 					win:perform_action({
-						SendKey = { key = key, mods = "" },
+						SendKey = { key = movement_chars[key], mods = "" },
 					}, pane)
 				else
 					win:perform_action({ ActivatePaneDirection = direction_keys[key] }, pane)

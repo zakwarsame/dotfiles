@@ -196,36 +196,36 @@ return {
     keys = {
       -- Movement (for macos cmd key)
       {
-        '<Char-0x68>',
+        '<Char-0xC1>',
         function()
           require('smart-splits').move_cursor_left()
         end,
         mode = { 'n', 'v' },
-        desc = 'Move to left split',
+        desc = 'Move to left split (from WezTerm)',
       },
       {
-        '<Char-0x6C>',
+        '<Char-0xC2>',
         function()
           require('smart-splits').move_cursor_right()
         end,
         mode = { 'n', 'v' },
-        desc = 'Move to right split',
+        desc = 'Move to right split (from WezTerm)',
       },
       {
-        '<Char-0x6B>',
+        '<Char-0xC3>',
         function()
           require('smart-splits').move_cursor_up()
         end,
         mode = { 'n', 'v' },
-        desc = 'Move to upper split',
+        desc = 'Move to upper split (from WezTerm)',
       },
       {
-        '<Char-0x6A>',
+        '<Char-0xC4>',
         function()
           require('smart-splits').move_cursor_down()
         end,
         mode = { 'n', 'v' },
-        desc = 'Move to lower split',
+        desc = 'Move to lower split (from WezTerm)',
       },
       -- Movement between splits
       {
