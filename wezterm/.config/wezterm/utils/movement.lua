@@ -3,6 +3,13 @@ local act = wezterm.action
 local module = {}
 
 local direction_keys = {
+	h = "Left",
+	l = "Right",
+	k = "Up",
+	j = "Down",
+}
+
+local arrow_direction_keys = {
 	LeftArrow = "Left",
 	RightArrow = "Right",
 	UpArrow = "Up",
@@ -16,10 +23,10 @@ end
 
 -- Special chars we'll send to Neovim for resize operations
 local resize_chars = {
-	LeftArrow = utf8.char(0xB1),  -- resize left
+	LeftArrow = utf8.char(0xB1), -- resize left
 	RightArrow = utf8.char(0xB2), -- resize right
-	UpArrow = utf8.char(0xB3),    -- resize up
-	DownArrow = utf8.char(0xB4),  -- resize down
+	UpArrow = utf8.char(0xB3), -- resize up
+	DownArrow = utf8.char(0xB4), -- resize down
 }
 
 local function get_platform_mods()
@@ -30,53 +37,51 @@ local function get_platform_mods()
 	end
 end
 
-local function get_mods(resize_or_move, key)
-	if resize_or_move == "resize" then
-		return "SHIFT"
-	elseif key == ";" or key == "'" then
-		return "CTRL"
-	else
-		return ""
-	end
-end
-
 local function split_nav(resize_or_move, key)
-	local mod = resize_or_move == "resize" and get_platform_mods() or ""
-	return {
-		key = key,
-		mods = mod,
-		action = wezterm.action_callback(function(win, pane)
-			if is_vim(pane) then
-				if resize_or_move == "resize" then
+	local mod = get_platform_mods()
+	if resize_or_move == "resize" then
+		-- Keep the original arrow key based resize logic
+		return {
+			key = key,
+			mods = mod,
+			action = wezterm.action_callback(function(win, pane)
+				if is_vim(pane) then
 					-- Send special char for Neovim to interpret
 					win:perform_action({
 						SendKey = { key = resize_chars[key], mods = "" },
 					}, pane)
 				else
-					-- For movement, just pass the arrow key
+					win:perform_action({ AdjustPaneSize = { arrow_direction_keys[key], 3 } }, pane)
+				end
+			end),
+		}
+	else
+		-- Movement logic using hjkl
+		return {
+			key = key,
+			mods = mod,
+			action = wezterm.action_callback(function(win, pane)
+				if is_vim(pane) then
+					-- For movement, just pass the key
 					win:perform_action({
 						SendKey = { key = key, mods = "" },
 					}, pane)
-				end
-			else
-				if resize_or_move == "resize" then
-					win:perform_action({ AdjustPaneSize = { direction_keys[key], 3 } }, pane)
 				else
 					win:perform_action({ ActivatePaneDirection = direction_keys[key] }, pane)
 				end
-			end
-		end),
-	}
+			end),
+		}
+	end
 end
 
 function module.apply_to_config(config)
 	local keys = {
-		-- move between split panes
-		split_nav("move", "LeftArrow"),
-		split_nav("move", "RightArrow"),
-		split_nav("move", "UpArrow"),
-		split_nav("move", "DownArrow"),
-		-- resize panes
+		-- move between split panes using hjkl
+		split_nav("move", "h"),
+		split_nav("move", "l"),
+		split_nav("move", "k"),
+		split_nav("move", "j"),
+		-- resize panes (keeping arrow keys)
 		split_nav("resize", "LeftArrow"),
 		split_nav("resize", "RightArrow"),
 		split_nav("resize", "UpArrow"),
@@ -93,7 +98,7 @@ function module.apply_to_config(config)
 			action = act.ActivateTabRelative(1),
 		},
 	}
-	
+
 	-- Add Alt+1,2,3... for direct tab selection
 	for i = 1, 9 do
 		table.insert(keys, {

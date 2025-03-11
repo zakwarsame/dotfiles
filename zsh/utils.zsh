@@ -194,6 +194,14 @@ v() {
     fi
 }
 
+vv() {
+    if [ $# -eq 0 ]; then
+        nvim --listen /tmp/nvim .
+    else
+        nvim --listen /tmp/nvim "$@"
+    fi
+}
+
 # obsidian nvim file creating
 ob() {
     title="$*"

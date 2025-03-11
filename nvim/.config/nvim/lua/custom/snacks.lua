@@ -66,7 +66,7 @@ keymap.set('n', '<leader>lg', function()
 end, { desc = 'Open lazygit' })
 
 -- Top Pickers & Explorer
-keymap.set('n', '<leader>,', function()
+keymap.set('n', '<leader>sf', function()
   Snacks.picker.smart()
 end, { desc = 'Smart Find Files' })
 keymap.set('n', '<leader><space>', function()
@@ -96,7 +96,7 @@ end, { desc = 'Buffers' })
 keymap.set('n', '<leader>sd', function()
   Snacks.picker.files { cwd = vim.fn.stdpath 'config' }
 end, { desc = 'Find Config File' })
-keymap.set('n', '<leader>sf', function()
+keymap.set('n', '<leader>,', function()
   Snacks.picker.files()
 end, { desc = 'Find Files' })
 keymap.set('n', '<leader>sF', function()
@@ -110,9 +110,9 @@ keymap.set('n', '<leader>s.', function()
 end, { desc = 'Recent' })
 
 -- git
-keymap.set('n', '<leader>gb', function()
-  Snacks.picker.git_branches()
-end, { desc = 'Git Branches' })
+-- keymap.set('n', '<leader>gb', function()
+--   Snacks.picker.git_branches()
+-- end, { desc = 'Git Branches' })
 keymap.set('n', '<leader>gl', function()
   Snacks.picker.git_log()
 end, { desc = 'Git Log' })
@@ -131,6 +131,9 @@ end, { desc = 'Git Diff (Hunks)' })
 keymap.set('n', '<leader>gf', function()
   Snacks.picker.git_log_file()
 end, { desc = 'Git Log File' })
+keymap.set('n', '<leader>gb', function()
+  Snacks.gitbrowse()
+end, { desc = 'Git Browse' })
 
 -- Grep
 keymap.set('n', '<leader>sb', function()
@@ -240,14 +243,14 @@ end, { desc = '[S]earch [J]umps' })
 -- Obsidian shortcuts
 keymap.set('n', '<leader>so', function()
   Snacks.picker.files {
-    cwd = os.getenv 'HOME' .. '/Documents/obsidian-vault',
+    cwd = os.getenv 'HOME' .. '/Documents/obsidian-work',
     glob = '**/*.md',
   }
 end, { desc = '[S]earch [O]bsidian Files' })
 
 keymap.set('n', '<leader>sO', function()
   Snacks.picker.grep {
-    cwd = os.getenv 'HOME' .. '/Documents/obsidian-vault',
+    cwd = os.getenv 'HOME' .. '/Documents/obsidian-work',
     glob = '**/*.md',
   }
 end, { desc = '[S]earch [O]bsidian Content' })
@@ -283,3 +286,4 @@ keymap.set('n', '<leader>sD', function()
     no_ignore = true,
   }
 end, { desc = '[S]earch [D]otfiles (Grep)' })
+

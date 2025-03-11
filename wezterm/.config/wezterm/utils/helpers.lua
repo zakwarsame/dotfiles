@@ -16,8 +16,7 @@ end
 
 local function get_theme_config(appearance)
 	local scheme = scheme_for_appearance(appearance)
-	local overlay_color = appearance:find("Dark")
-		and "rgba(28, 33, 39, 0.81)" -- Dark overlay
+	local overlay_color = appearance:find("Dark") and "rgba(28, 33, 39, 0.81)" -- Dark overlay
 		or "rgba(255, 255, 255, 0.91)" -- Light overlay
 
 	return {
@@ -35,7 +34,7 @@ local function get_theme_config(appearance)
 				height = "100%",
 				width = "100%",
 			},
-		}
+		},
 	}
 end
 
@@ -228,6 +227,18 @@ local module = {
 			-- },
 			-- { key = 'c', mods = 'ALT', action = wezterm.action.Copy },
 			{ key = "v", mods = mods, action = wezterm.action.PasteFrom("Clipboard") },
+			-- Disable CMD+h (do nothing)
+			{
+				key = "h",
+				mods = "CMD",
+				action = wezterm.action.DisableDefaultAssignment,
+			},
+			-- Disable CMD+k (do nothing)
+			{
+				key = "k",
+				mods = "CMD",
+				action = wezterm.action.DisableDefaultAssignment,
+			},
 
 			-- { key = 'v', mods = mods, action = wezterm.action.PasteFrom },
 		}

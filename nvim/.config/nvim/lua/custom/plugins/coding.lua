@@ -194,9 +194,9 @@ return {
     'mrjones2014/smart-splits.nvim',
     lazy = false,
     keys = {
-      -- Movement between splits
+      -- Movement (for macos cmd key)
       {
-        '<Left>',
+        '<Char-0x68>',
         function()
           require('smart-splits').move_cursor_left()
         end,
@@ -204,7 +204,7 @@ return {
         desc = 'Move to left split',
       },
       {
-        '<Right>',
+        '<Char-0x6C>',
         function()
           require('smart-splits').move_cursor_right()
         end,
@@ -212,7 +212,7 @@ return {
         desc = 'Move to right split',
       },
       {
-        '<Up>',
+        '<Char-0x6B>',
         function()
           require('smart-splits').move_cursor_up()
         end,
@@ -220,7 +220,40 @@ return {
         desc = 'Move to upper split',
       },
       {
-        '<Down>',
+        '<Char-0x6A>',
+        function()
+          require('smart-splits').move_cursor_down()
+        end,
+        mode = { 'n', 'v' },
+        desc = 'Move to lower split',
+      },
+      -- Movement between splits
+      {
+        '<A-h>',
+        function()
+          require('smart-splits').move_cursor_left()
+        end,
+        mode = { 'n', 'v' },
+        desc = 'Move to left split',
+      },
+      {
+        '<A-l>',
+        function()
+          require('smart-splits').move_cursor_right()
+        end,
+        mode = { 'n', 'v' },
+        desc = 'Move to right split',
+      },
+      {
+        '<A-k>',
+        function()
+          require('smart-splits').move_cursor_up()
+        end,
+        mode = { 'n', 'v' },
+        desc = 'Move to upper split',
+      },
+      {
+        '<A-j>',
         function()
           require('smart-splits').move_cursor_down()
         end,
