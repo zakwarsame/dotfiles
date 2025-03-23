@@ -243,14 +243,14 @@ end, { desc = '[S]earch [J]umps' })
 -- Obsidian shortcuts
 keymap.set('n', '<leader>so', function()
   Snacks.picker.files {
-    cwd = os.getenv 'HOME' .. '/Documents/obsidian-work',
+    cwd = os.getenv 'HOME' .. '/Documents/obsidian-vault',
     glob = '**/*.md',
   }
 end, { desc = '[S]earch [O]bsidian Files' })
 
 keymap.set('n', '<leader>sO', function()
   Snacks.picker.grep {
-    cwd = os.getenv 'HOME' .. '/Documents/obsidian-work',
+    cwd = os.getenv 'HOME' .. '/Documents/obsidian-vault',
     glob = '**/*.md',
   }
 end, { desc = '[S]earch [O]bsidian Content' })
@@ -286,4 +286,3 @@ keymap.set('n', '<leader>sD', function()
     no_ignore = true,
   }
 end, { desc = '[S]earch [D]otfiles (Grep)' })
-
