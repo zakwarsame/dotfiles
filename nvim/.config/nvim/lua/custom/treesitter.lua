@@ -4,7 +4,7 @@ M.setup = function()
   local group = vim.api.nvim_create_augroup('custom-treesitter', { clear = true })
 
   require('nvim-treesitter').setup {
-    ensure_installed = { 'lua', 'vim', 'vimdoc', 'javascript', 'typescript', 'tsx', 'python', 'rust', 'toml' },
+    ensure_installed = { 'lua', 'vim', 'vimdoc', 'javascript', 'typescript', 'tsx', 'python', 'rust', 'toml', 'nix' },
     sync_install = false,
     auto_install = true,
     highlight = { enable = true },

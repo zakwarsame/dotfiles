@@ -1,0 +1,14 @@
+git
+neovim
+fzf
+ripgrep
+jq
+yq
+bat
+fd
+exa
+htop
+wget
+curl
+node
+zoxide

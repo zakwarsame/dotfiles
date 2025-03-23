@@ -18,6 +18,32 @@ install_antidote() {
     fi
 }
 
+install_brew() {
+    if ! command -v brew &>/dev/null; then
+        echo "Installing Homebrew..."
+        /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+        
+        # Add Homebrew to PATH based on platform
+        if [[ "$(uname -m)" == "arm64" ]]; then
+            echo 'eval "$(/opt/homebrew/bin/brew shellenv)"' >> $HOME/.zprofile
+            eval "$(/opt/homebrew/bin/brew shellenv)"
+        else
+            echo 'eval "$(/usr/local/bin/brew shellenv)"' >> $HOME/.zprofile
+            eval "$(/usr/local/bin/brew shellenv)"
+        fi
+        
+        echo "Homebrew installed successfully!"
+    else
+        echo "Homebrew is already installed."
+    fi
+    
+    # Install apps from the apps.txt file
+    if [[ -f "$DOTFILES_DIR/brew/apps.txt" ]]; then
+        echo "Installing apps from brew/apps.txt..."
+        xargs brew install < "$DOTFILES_DIR/brew/apps.txt"
+    fi
+}
+
 install_stow() {
     if ! command -v stow &>/dev/null; then
         echo "Installing GNU Stow..."
@@ -140,6 +166,7 @@ setup_linux_configs() {
 
 setup_macos_configs() {
     echo "Configuring macOS-specific settings..."
+    install_brew
     setup_nix_config
 }
 
