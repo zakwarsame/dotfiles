@@ -6,9 +6,10 @@ jq
 yq
 bat
 fd
-exa
-htop
+eza
+btop
 wget
 curl
 node
 zoxide
+lazygit
