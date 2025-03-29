@@ -100,3 +100,7 @@ sh <(curl -L https://nixos.org/nix/install)
 ```bash
 cd nixos-config && nix run .#build-switch
 ```
+
+### Dotfiles
+
+If you're working in a dotfiles directory, don't forget that files/folders can be nested in hidden folders (e.g .config/)

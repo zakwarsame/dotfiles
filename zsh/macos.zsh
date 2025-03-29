@@ -53,3 +53,6 @@ defaults write NSGlobalDomain InitialKeyRepeat -int 12
 # Show hidden files in finder. I want to see everything.
 defaults write com.apple.finder AppleShowAllFiles YES
 export MYOS=macos
+
+# wezerm path
+export PATH="/Applications/WezTerm.app/Contents/MacOS:$PATH"
