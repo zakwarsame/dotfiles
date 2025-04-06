@@ -9,7 +9,7 @@
   fn lctl
 )
 (defvar
-  tap-time 150
+  tap-time 200
   hold-time 200
 )
 

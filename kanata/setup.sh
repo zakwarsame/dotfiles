@@ -5,6 +5,13 @@ DOTFILES_DIR="$HOME/dotfiles"
 
 echo "Setting up Kanata for macOS..."
 
+read -p "Continue with kanata keyboard setup? (y/n) " yn
+if [[ ! $yn =~ ^[Yy]$ ]]; then
+    sudo pkill kanata 2>/dev/null || true
+    echo "Aborting kanata setup..."
+    exit 0
+fi
+
 echo "Please complete the following steps in System Settings:"
 echo "1. Enable 'Karabiner-Elements Non-Privileged Agents' in Login Items & Extensions"
 echo "2. Enable 'Karabiner-Elements Privileged Daemons' in Login Items & Extensions"
@@ -43,3 +50,7 @@ echo "Kanata is now running in the background."
 
 # to kill kanata
 # sudo pkill kanata || true
+
+# to check loggs
+# cat ~/Library/Logs/kanata.log
+# cat ~/Library/Logs/kanata.err.log
