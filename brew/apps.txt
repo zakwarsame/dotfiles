@@ -16,3 +16,5 @@ lazygit
 wezterm
 withgraphite/tap/graphite
 tmux
+karabiner-elements
+kanata

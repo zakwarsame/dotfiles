@@ -1,0 +1,57 @@
+;; defsrc is still necessary
+(defcfg
+  process-unmapped-keys yes
+)
+
+(defsrc
+  f1   f2   f3   f4   f5   f6   f7   f8   f9   f10   f11   f12
+  caps a s d f h j k l ;
+  fn lctl
+)
+(defvar
+  tap-time 150
+  hold-time 200
+)
+
+(defalias
+  ;; Regular tap-hold for esc/ctrl
+  escctrl (tap-hold 100 100 esc lctl)
+
+  ;; Home row mods - left side
+  a (tap-hold $tap-time $hold-time a lalt)  ;; Left Option
+  s (tap-hold $tap-time $hold-time s lmet)  ;; Left Command
+  d (tap-hold $tap-time $hold-time d lctl)  ;; Left Control
+  f (tap-hold $tap-time $hold-time f lsft)  ;; Left Shift
+
+  ;; Home row mods - right side (mirrored)
+  j (tap-hold $tap-time $hold-time j rsft)  ;; Right Shift
+  k (tap-hold $tap-time $hold-time k rctl)  ;; Right Control
+  l (tap-hold $tap-time $hold-time l rmet)  ;; Right Command
+  ; (tap-hold $tap-time $hold-time ; ralt)  ;; Right Option
+
+  fnl (tap-hold 200 200 fn (layer-toggle fn))
+)
+
+(deflayer base
+  brdn  brup  _    _    _    _   prev  pp  next  mute  vold  volu
+  @escctrl @a @s @d @f h @j @k @l @;
+  @fnl lctl
+)
+
+(deflayer fn
+  f1   f2   f3   f4   f5   f6   f7   f8   f9   f10   f11   f12
+  @escctrl _ _ _ _ _ _ _ _ _
+  fn _
+)
+
+;; Intercept Ctrl+HJKL and map to arrow keys
+(defoverrides
+  ;; When ctrl and h are pressed together, output left arrow
+  (lctl h) (left)
+  ;; When ctrl and j are pressed together, output down arrow
+  (lctl j) (down)
+  ;; When ctrl and k are pressed together, output up arrow
+  (lctl k) (up)
+  ;; When ctrl and l are pressed together, output right arrow
+  (lctl l) (right)
+)

@@ -81,5 +81,9 @@
     "key": "ctrl+p",
     "command": "-notebook.centerActiveCell",
     "when": "notebookEditorFocused"
+  },
+  {
+    "key": "cmd+i",
+    "command": "composerMode.agent"
   }
 ]
