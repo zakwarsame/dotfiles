@@ -128,3 +128,5 @@ function llm() {
   fi
 }
 
+
+# set gcloud to python3

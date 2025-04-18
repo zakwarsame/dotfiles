@@ -150,8 +150,6 @@
 	# resolve that same conflict in a future rebase, this setting will reuse your previously recorded conflict resolution.
 	enabled = true
 	autoupdate = true
-[maintenance]
-	repo = /Users/zak/world/trees/root/src
 [filter "lfs"]
 	clean = git-lfs clean -- %f
 	smudge = git-lfs smudge -- %f

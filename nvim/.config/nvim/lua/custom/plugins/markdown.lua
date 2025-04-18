@@ -58,7 +58,7 @@ return {
         workspaces = {
           {
             name = 'personal',
-            path = '~/Documents/obsidian-vault',
+            path = '~/Documents/obsidian-work',
           },
         },
         mappings = {

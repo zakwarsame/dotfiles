@@ -28,15 +28,15 @@ require('avante').setup {
   },
   provider = 'local_proxy',
   -- provider = 'claude',
-  -- auto_suggestions_provider = 'local_proxy',
-  auto_suggestions_provider = 'claude',
+  auto_suggestions_provider = 'local_proxy',
+  -- auto_suggestions_provider = 'claude',
   vendors = {
     ['local_proxy'] = {
-      endpoint = 'http://127.0.0.1:8787/v1/',
+      endpoint = 'http://127.0.0.1:8787/v1/chat',
       model = 'anthropic:claude-3-5-sonnet-20241022',
       api_key_name = 'ANTHROPIC_API_KEY',
       parse_curl_args = openai.parse_curl_args,
-      parse_response_data = openai.parse_response,
+      parse_messages = openai.parse_response,
     },
   },
 }
