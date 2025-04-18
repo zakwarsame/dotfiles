@@ -66,14 +66,14 @@ local module = {
 					description = "Enter new name for session",
 					action = wezterm.action_callback(function(window, pane, line)
 						if line then
-							mux.rename_workspace(window:mux_window():get_workspace(), line)
+							wezterm.mux.rename_workspace(window:mux_window():get_workspace(), line)
 						end
 					end),
 				}),
 			},
 			-- Show list of workspaces
 			{
-				key = "s",
+				key = "l",
 				mods = "LEADER",
 				action = act.ShowLauncherArgs({ flags = "FUZZY|WORKSPACES" }),
 			},
